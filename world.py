@@ -2,6 +2,7 @@ import pygame
 
 from block import Block
 from constants import *
+from level import Level
 from sprites import Player
 
 
@@ -17,11 +18,7 @@ class World:
         self.player_group = pygame.sprite.Group()
         self.map_group = pygame.sprite.Group()
 
-        self.player = [Player(self, i * 10, i * 10, self.player_group) for i in range(5)]
-
-        self.block = Block(300, 300, 100, 400, (100, 255, 100), 1.5, self.map_group)
-        self.block = Block(0, 200, 300, 100, (255, 255, 255), BLOCK_FRICTION, self.map_group)
-        self.block = Block(400, 150, 400, 400, (255, 255, 255), BLOCK_FRICTION, self.map_group)
+        self.level = Level(self)
 
     def draw(self):
         self.screen.fill((0, 0, 0))
