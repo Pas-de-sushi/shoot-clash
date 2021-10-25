@@ -2,7 +2,7 @@ import pygame
 
 from block import Block
 from constants import *
-from sprites import Player
+from player import Player
 from world import World
 
 pygame.init()
@@ -21,8 +21,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-
-
+    world.update(elapsed)
     world.draw()
 
     pygame.display.flip()

@@ -2,7 +2,8 @@ import pygame
 
 from block import Block
 from constants import *
-from sprites import Player
+from player import Player
+from src.enemy import Enemy
 
 
 class Level:
@@ -21,4 +22,7 @@ class Level:
         Block(800, 50, 100, 100, (255, 255, 255), BLOCK_FRICTION, self.world.map_group)
         Block(0, 50, 100, 150, (255, 255, 255), BLOCK_FRICTION, self.world.map_group)
 
-        Player(self.world, 10, 10, self.world.player_group)
+        Player(self.world, 10, 10, 1, self.world.player_group)
+
+        for i in range(5):
+            Enemy(self.world, 50 * i, 10, 1, self.world.enemy_group)
