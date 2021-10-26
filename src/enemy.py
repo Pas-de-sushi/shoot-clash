@@ -25,9 +25,9 @@ class Enemy(DynamicObject):
         ici l'ia des enemies choisi le mouvement
         """
         if self.direction:
-            self.velocity.x += 00
+            self.velocity.x += 0.1
         else:
-            self.velocity.x -= 0
+            self.velocity.x -= 0.1
         # self.move(Vector(move_x, 0))
 
     def handle_collision(self, old_rect) -> pygame.rect:

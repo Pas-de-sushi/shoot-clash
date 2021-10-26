@@ -33,11 +33,11 @@ def check_map_collision(map_group: pygame.sprite.Group, old_rect: pygame.rect, n
 
             if (new_rect.y < block.rect.y + block.rect.height) and (
                     old_rect.y >= block.rect.y + block.rect.height):
-                corrected_rect.y = block.rect.y + old_rect.height + 1
+                corrected_rect.y = block.rect.y + new_rect.height + 1
 
                 top_callback(block)
             if (new_rect.y + new_rect.height > block.rect.y) and (old_rect.y + old_rect.height <= block.rect.y):
-                corrected_rect.y = block.rect.y - old_rect.height - 1
+                corrected_rect.y = block.rect.y - new_rect.height - 1
 
                 bottom_callback(block)
 
