@@ -1,13 +1,11 @@
 import pygame
 
-from block import Block
 from constants import *
-from player import Player
 from world import World
 
 pygame.init()
 
-screen = pygame.display.set_mode((1080, 720))
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Initialisation de l'horloge du jeu (limite les fps)
 clock = pygame.time.Clock()

@@ -21,7 +21,7 @@ def check_map_collision(map_group: pygame.sprite.Group, old_rect: pygame.rect, n
 
     corrected_rect = new_rect
     for block in map_group:
-        if new_rect.colliderect(block):
+        if new_rect.colliderect(block) and new_rect != block:
 
             if (new_rect.x + new_rect.width > block.rect.x) and (old_rect.x + old_rect.width <= block.rect.x):
                 corrected_rect.x = block.rect.x - new_rect.width - 1  # le 1 desactive la collision (perf)
