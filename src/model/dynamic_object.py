@@ -30,7 +30,7 @@ class DynamicObject(pygame.sprite.Sprite):
     def move(self, vector: Vector):
         self.rect = self.rect.move(vector.x, vector.y)
 
-    def handle_collision(self, old_rect) -> pygame.rect:
+    def handle_collision(self, old_rect):
         """
         Executé a la fin de update
         """

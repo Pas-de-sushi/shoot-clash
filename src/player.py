@@ -1,12 +1,12 @@
 import pygame
 
 from src.bullet import Bullet
-from src.model.dynamic_object import DynamicObject
+from src.model.entity import Entity
 from src.utils.map_collision import check_map_collision
 from utils.vector import Vector
 
 
-class Player(DynamicObject):
+class Player(Entity):
     """
     Classe qui represente le joueur
     """
@@ -14,9 +14,7 @@ class Player(DynamicObject):
     def __init__(self, world, x, y, mass, *groups) -> None:
         self.image = pygame.Surface([10, 15])
         self.image.fill((0, 255, 0))
-        super().__init__(world, x, y, mass, *groups)
-
-        self.direction = True  # True : enemi se dirige vers la droite False gauche
+        super(Player, self).__init__(world, x, y, mass, 100, groups)
 
         self.jump_count = 0
         self.max_jump = 1
@@ -68,7 +66,7 @@ class Player(DynamicObject):
         self.velocity = self.velocity + (bullet.velocity * (-0.5)) * (bullet.mass / self.mass)
         # coef 0,5 de recul|Recul du joueur TODO: Suivant type arme ?
 
-    def handle_collision(self, old_rect) -> pygame.rect:
+    def handle_collision(self, old_rect):
         self.rect = check_map_collision(self.world.map_group, old_rect, self.rect, self.right, self.left, self.top,
                                         self.bottom)
 
