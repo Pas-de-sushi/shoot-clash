@@ -13,7 +13,10 @@ class DynamicObject(pygame.sprite.Sprite):
         Creer  self.image avant d'appeler
         """
         super().__init__(*groups)
-        assert (self.image is not None, "Initialisez self.image : pygame.Surface avant super.__init__")
+        assert (
+            self.image is not None,
+            "Initialisez self.image : pygame.Surface avant super.__init__",
+        )
         self.rect = self.image.get_rect()
         self.rect.move_ip(x, y)
         self.velocity = Vector(0, 0)

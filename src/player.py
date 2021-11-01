@@ -60,15 +60,28 @@ class Player(Entity):
         self.velocity += move
 
     def shoot(self):
-        bullet = Bullet(self.world, self.rect.x, self.rect.y,
-                        Vector(self.velocity.x + (15 if self.direction else -15), 0),
-                        self.world.bullet_group)
-        self.velocity = self.velocity + (bullet.velocity * (-0.5)) * (bullet.mass / self.mass)
+        bullet = Bullet(
+            self.world,
+            self.rect.x,
+            self.rect.y,
+            Vector(self.velocity.x + (15 if self.direction else -15), 0),
+            self.world.bullet_group,
+        )
+        self.velocity = self.velocity + (bullet.velocity * (-0.5)) * (
+            bullet.mass / self.mass
+        )
         # coef 0,5 de recul|Recul du joueur TODO: Suivant type arme ?
 
     def handle_collision(self, old_rect):
-        self.rect = check_map_collision(self.world.map_group, old_rect, self.rect, self.right, self.left, self.top,
-                                        self.bottom)
+        self.rect = check_map_collision(
+            self.world.map_group,
+            old_rect,
+            self.rect,
+            self.right,
+            self.left,
+            self.top,
+            self.bottom,
+        )
 
     def right(self, block):
         self.velocity.x *= -1

@@ -7,8 +7,9 @@ class Block(pygame.sprite.Sprite):
     friction: vitesse joueur multiplié par celui-ci lorsqu'il marche dessus
     """
 
-    def __init__(self, x, y, width, height, color, friction=0.7,
-                 *groups):  # TODO : probleme valeur par defaut ne marche pas avec groups
+    def __init__(
+        self, x, y, width, height, color, friction=0.7, *groups
+    ):  # TODO : probleme valeur par defaut ne marche pas avec groups
         super().__init__(*groups)
 
         self.image = pygame.Surface([width, height])

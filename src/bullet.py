@@ -34,11 +34,11 @@ class Bullet(DynamicObject):
             # entity.velocity = entity.velocity + self.velocity * (self.mass / entity.mass)
             self.kill()
         if pygame.sprite.spritecollideany(self, self.world.map_group):
-            #for i in range(10):
+            # for i in range(10):
             #    Blood(self.world, self.rect.x + random.randint(0, self.rect.width),
             #          self.rect.y + random.randint(0, self.rect.height),
             #          Vector(self.velocity.x * (-1), self.velocity.y * (-1)), self.world.particle_group)
-            #Blood(self.world, self.rect.x + random.randint(0, self.rect.width),
+            # Blood(self.world, self.rect.x + random.randint(0, self.rect.width),
             #      self.rect.y + random.randint(0, self.rect.height), Vector(self.velocity.x * 0.1, 0),
             #      self.world.particle_group)
             self.kill()
