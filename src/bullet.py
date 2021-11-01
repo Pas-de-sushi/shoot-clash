@@ -2,8 +2,8 @@ import random
 
 import pygame
 
-from src.particles.blood import Blood
-from src.model.dynamic_object import DynamicObject
+from particles.blood import Blood
+from model.dynamic_object import DynamicObject
 from utils.vector import Vector
 
 

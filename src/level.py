@@ -1,7 +1,7 @@
 from block import Block
 from constants import *
 from player import Player
-from src.enemy import Enemy
+from enemy import Enemy
 
 
 class Level:

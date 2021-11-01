@@ -1,5 +1,5 @@
-from src.model.dynamic_object import DynamicObject
-from src.utils.vector import Vector
+from model.dynamic_object import DynamicObject
+from utils.vector import Vector
 
 
 class Entity(DynamicObject):
