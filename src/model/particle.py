@@ -21,7 +21,9 @@ class Particle(DynamicObject):
 
     """
 
-    def __init__(self, world, x: int, y: int, mass, velocity: Vector, lifetime, *groups) -> None:
+    def __init__(
+        self, world, x: int, y: int, mass, velocity: Vector, lifetime, *groups
+    ) -> None:
         """
         Declarer self.image avant d'appeler super.init
         ex:

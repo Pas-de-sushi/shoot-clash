@@ -37,10 +37,24 @@ class Enemy(Entity):
         # self.move(Vector(move_x, 0))
 
     def handle_collision(self, old_rect):
-        self.rect = check_map_collision(self.world.map_group, old_rect, self.rect, self.right, self.left, self.top,
-                                        self.bottom)
-        self.rect = check_map_collision(self.world.enemy_group, old_rect, self.rect, self.right, self.left, self.top,
-                                        self.bottom)
+        self.rect = check_map_collision(
+            self.world.map_group,
+            old_rect,
+            self.rect,
+            self.right,
+            self.left,
+            self.top,
+            self.bottom,
+        )
+        self.rect = check_map_collision(
+            self.world.enemy_group,
+            old_rect,
+            self.rect,
+            self.right,
+            self.left,
+            self.top,
+            self.bottom,
+        )
 
     def right(self, block):
         self.velocity.x *= -1
@@ -67,9 +81,13 @@ class Enemy(Entity):
     def receive_damage(self, damage, entity):
         self.velocity = self.velocity + entity.velocity * (entity.mass / self.mass)
         for i in range(20):
-            Blood.random_direction(self.world, self.rect.x + random.randint(0, self.rect.width),
-                                   self.rect.y + random.randint(0, self.rect.height),
-                                   Vector(entity.velocity.x, entity.velocity.y), self.world.particle_group)
+            Blood.random_direction(
+                self.world,
+                self.rect.x + random.randint(0, self.rect.width),
+                self.rect.y + random.randint(0, self.rect.height),
+                Vector(entity.velocity.x, entity.velocity.y),
+                self.world.particle_group,
+            )
         super(Enemy, self).receive_damage(damage)
 
     def set_health(self, new_health):

@@ -13,7 +13,7 @@ running = True
 world = World(screen)
 while running:
     # Limite à 60 fps et retourne le temps entre deux frames
-    elapsed = (clock.tick(MAX_FPS))
+    elapsed = clock.tick(MAX_FPS)
     events_queue = pygame.event.get()
     for event in events_queue:
         if event.type == pygame.QUIT:
