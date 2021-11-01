@@ -1,8 +1,9 @@
 import pygame
 
-from src.bullet import Bullet
-from src.model.entity import Entity
-from src.utils.map_collision import check_map_collision
+
+from bullet import Bullet
+from model.entity import Entity
+from utils.map_collision import check_map_collision
 from utils.vector import Vector
 
 

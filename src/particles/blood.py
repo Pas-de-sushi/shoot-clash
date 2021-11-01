@@ -1,7 +1,7 @@
 import pygame
 
-from src.model.particle import Particle
-from src.utils.vector import Vector
+from model.particle import Particle
+from utils.vector import Vector
 
 
 class Blood(Particle):

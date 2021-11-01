@@ -2,10 +2,10 @@ import random
 
 import pygame
 
-from src.model.entity import Entity
-from src.particles.blood import Blood
-from src.utils.map_collision import check_map_collision
-from src.utils.vector import Vector
+from model.entity import Entity
+from particles.blood import Blood
+from utils.map_collision import check_map_collision
+from utils.vector import Vector
 
 
 class Enemy(Entity):

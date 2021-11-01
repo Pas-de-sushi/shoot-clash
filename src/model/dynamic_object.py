@@ -1,6 +1,6 @@
 import pygame
 
-from src.utils.vector import Vector
+from utils.vector import Vector
 
 
 class DynamicObject(pygame.sprite.Sprite):
