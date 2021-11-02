@@ -10,7 +10,7 @@ from utils.vector import Vector
 
 class Enemy(Entity):
     """
-    Classe qui represente les enemis
+    Classe qui represente les ennemis
     """
 
     def __init__(self, world, x, y, mass, *groups) -> None:
