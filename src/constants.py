@@ -11,4 +11,4 @@ SCREEN_HEIGHT = 720
 GRAVITY = 20
 MAX_FPS = 60  # Limite de FPS
 
-BLOCK_FRICTION = 0.40 # TODO: Mettre dans constructeur par defaut
+BLOCK_FRICTION = 0.70 # TODO: Mettre dans constructeur par defaut

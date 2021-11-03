@@ -98,6 +98,6 @@ class Player(Entity):
         self.velocity.y = 0
 
     def bottom(self, block):
-        self.velocity.y *= -1
+        self.velocity.y *= -0.25
         self.velocity *= block.friction
         self.jump_count = 0

@@ -31,9 +31,9 @@ class Enemy(Entity):
         ici l'ia des enemies choisi le mouvement
         """
         if self.direction:
-            self.velocity.x += 0.1
+            self.velocity.x += 0.2
         else:
-            self.velocity.x -= 0.1
+            self.velocity.x -= 0.2
         # self.move(Vector(move_x, 0))
 
     def handle_collision(self, old_rect):
@@ -70,7 +70,7 @@ class Enemy(Entity):
         self.velocity.y = 0
 
     def bottom(self, block):
-        self.velocity.y *= -1
+        self.velocity.y *= -0.25
         self.velocity *= block.friction
         # if abs(self.velocity.y) > 10: #particules de chute
         #    for i in range(10):

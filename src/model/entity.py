@@ -27,6 +27,11 @@ class Entity(DynamicObject):
 
     def move(self, vector: Vector):
         super(Entity, self).move(vector)
+        # Système de vitesse max --> collision avec l'air c'est galère
+        if vector.x > 10 :
+            vector.x = 10
+        if vector.x < -10:
+            vector.x = -10
 
     def receive_damage(self, damage):
         self.set_health(self.health - damage)
