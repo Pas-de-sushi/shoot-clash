@@ -31,6 +31,11 @@ class DynamicObject(pygame.sprite.Sprite):
         self.handle_collision(old_rect)
 
     def move(self, vector: Vector):
+        # Système de vitesse max --> collision avec l'air c'est galère
+        if vector.x > 10 :
+            vector.x = 10
+        if vector.x < -10:
+            vector.x = -10
         self.rect = self.rect.move(vector.x, vector.y)
 
     def handle_collision(self, old_rect):
