@@ -18,6 +18,7 @@ class World:
         self.bullet_group = pygame.sprite.Group()
         self.particle_group = pygame.sprite.Group()
         self.event_box_group = pygame.sprite.Group()
+        self.door_group = pygame.sprite.Group()  # sert pour ouverture des portes
 
         self.level = Level(self)
         self.elapsed = 0

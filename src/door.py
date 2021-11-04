@@ -11,6 +11,7 @@ class Door(EventBox):
         self.world = world
         super().__init__(x, y, width, height, (self.world.player_group, self.world.enemy_group), groups)
         self.locked = False
+        self.set_locked(True)
 
     def on_collision(self, entity):
         super().on_collision(entity)
