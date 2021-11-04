@@ -13,7 +13,7 @@ class Enemy(Entity):
     Classe qui represente les ennemis
     """
 
-    def __init__(self, world, x, y, mass, *groups) -> None:
+    def __init__(self, world, x, y, mass, groups: tuple) -> None:
         self.image = pygame.Surface([20, 20])
         self.image.fill((255, 0, 0))
         self.image.fill((0, 100, 150))

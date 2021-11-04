@@ -17,6 +17,8 @@ class World:
         self.player_group = pygame.sprite.Group()
         self.bullet_group = pygame.sprite.Group()
         self.particle_group = pygame.sprite.Group()
+        self.event_box_group = pygame.sprite.Group()
+
         self.level = Level(self)
         self.elapsed = 0
 
@@ -28,6 +30,7 @@ class World:
         self.enemy_group.draw(self.screen)
         self.bullet_group.draw(self.screen)
         self.player_group.draw(self.screen)
+        self.event_box_group.draw(self.screen)
 
     def update(self, elapsed):
         self.elapsed = elapsed
@@ -35,3 +38,4 @@ class World:
         self.enemy_group.update()
         self.bullet_group.update()
         self.player_group.update()
+        self.event_box_group.update()

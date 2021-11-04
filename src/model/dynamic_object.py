@@ -8,11 +8,11 @@ class DynamicObject(pygame.sprite.Sprite):
     Classe qui represente les mouvants
     """
 
-    def __init__(self, world, x, y, mass, *groups) -> None:
+    def __init__(self, world, x, y, mass, groups: tuple) -> None:
         """
         Creer  self.image avant d'appeler
         """
-        super().__init__(*groups)
+        super().__init__(groups)
         assert (
             self.image is not None,
             "Initialisez self.image : pygame.Surface avant super.__init__",

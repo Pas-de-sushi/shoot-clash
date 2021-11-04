@@ -1,7 +1,8 @@
 from block import Block
 from constants import *
-from player import Player
+from door import Door
 from enemy import Enemy
+from player import Player
 
 
 class Level:
@@ -25,8 +26,8 @@ class Level:
             SCREEN_WIDTH,
             10,
             (255, 255, 255),
-            BLOCK_FRICTION,
             self.world.map_group,
+            BLOCK_FRICTION,
         )
         Block(
             0,
@@ -34,8 +35,8 @@ class Level:
             SCREEN_WIDTH,
             10,
             (255, 255, 255),
-            BLOCK_FRICTION,
             self.world.map_group,
+            BLOCK_FRICTION,
         )
         Block(
             0,
@@ -43,8 +44,8 @@ class Level:
             10,
             SCREEN_HEIGHT - 10,
             (255, 255, 255),
-            BLOCK_FRICTION,
             self.world.map_group,
+            BLOCK_FRICTION,
         )
         Block(
             SCREEN_WIDTH - 100,
@@ -52,8 +53,8 @@ class Level:
             100,
             SCREEN_HEIGHT - 10,
             (255, 255, 255),
-            BLOCK_FRICTION,
             self.world.map_group,
+            BLOCK_FRICTION,
         )  # Droite
         Block(
             0,
@@ -61,10 +62,17 @@ class Level:
             SCREEN_WIDTH - 300,
             10,
             (255, 255, 255),
-            BLOCK_FRICTION,
             self.world.map_group,
+            BLOCK_FRICTION,
         )
-
+        Door(
+            self.world,
+            30,
+            SCREEN_HEIGHT - 60,
+            50,
+            50,
+            (self.world.event_box_group)
+        )
         Player(self.world, 10, 10, 1, self.world.player_group)
 
         for i in range(4):
