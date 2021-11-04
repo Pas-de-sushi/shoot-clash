@@ -18,17 +18,17 @@ class Blood(Particle):
 
     """
 
-    def __init__(self, world, x, y, velocity: Vector, *groups) -> None:
+    def __init__(self, world, x, y, velocity: Vector, groups: tuple) -> None:
         self.image = pygame.Surface([5, 5])
         self.image.fill((200, 0, 0))
 
-        super().__init__(world, x, y, 1, velocity, -1, *groups)
+        super().__init__(world, x, y, 1, velocity, -1, groups)
 
     @classmethod
-    def random_direction(cls, world, x, y, velocity: Vector, *groups):
+    def random_direction(cls, world, x, y, velocity: Vector, groups: tuple):
         """
         Constructeur qui ajoute de la randomisation sur l'axe y de la particule
         """
-        _instance = cls(world, x, y, velocity, *groups)
+        _instance = cls(world, x, y, velocity, groups)
         _instance.randomize_direction()
         return _instance

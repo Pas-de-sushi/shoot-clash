@@ -1,6 +1,5 @@
 import pygame
 
-
 from bullet import Bullet
 from model.entity import Entity
 from utils.map_collision import check_map_collision
@@ -12,7 +11,7 @@ class Player(Entity):
     Classe qui represente le joueur
     """
 
-    def __init__(self, world, x, y, mass, *groups) -> None:
+    def __init__(self, world, x, y, mass, groups: tuple) -> None:
         self.image = pygame.Surface([10, 15])
         self.image.fill((0, 255, 0))
         super(Player, self).__init__(world, x, y, mass, 100, groups)
@@ -66,10 +65,10 @@ class Player(Entity):
             self.rect.x,
             self.rect.y,
             Vector(self.velocity.x + (15 if self.direction else -15), 0),
-            self.world.bullet_group,
+            (self.world.bullet_group),
         )
         self.velocity = self.velocity + (bullet.velocity * (-0.5)) * (
-            bullet.mass / self.mass
+                bullet.mass / self.mass
         )
         # coef 0,5 de recul|Recul du joueur TODO: Suivant type arme ?
 
