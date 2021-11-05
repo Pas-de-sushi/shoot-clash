@@ -3,8 +3,13 @@ from model.event_box import EventBox
 
 class Door(EventBox):
     """
-    Porte permet au joueur de passer au niveau superieur
-    groups: tuple groupe auquel la boite appartient
+    Porte
+    permet au joueur de passer au niveau superieur
+
+    Propriétés:
+    - x, y: position de la porte
+    - width, height: taille de la porte
+    - groups: tuple groupe auquel de la porte appartient
     """
 
     def __init__(self, world, x, y, width, height, groups: tuple):
@@ -14,15 +19,20 @@ class Door(EventBox):
         self.set_locked(True)
 
     def on_collision(self, entity):
+        """
+        Est appelé lorsque un joueur est entré en collision avec la porte
+        
+        Propriétés:
+        - entity: entité qui est entré en colision
+        """
         super().on_collision(entity)
         if self.locked == False:
-            print('Exit !')
             self.world.level.player_access_door()
             self.set_locked(True)
 
-    def set_locked(self, state):
+    def set_locked(self, state: bool):
         """
-        Actualise la vue
+        Definie si la porte est verouillé ou non et actualise la vue
         """
         self.locked = state
         if self.locked:
