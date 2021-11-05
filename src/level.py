@@ -82,12 +82,24 @@ class Level:
         self.spawn_enemys()
 
     def on_enemy_death(self):
+        """
+        Est appelé lorsqu'un ennemi meurt 
+        puis 
+        - Fait spawner un nouvel ennemis si besoin
+        - appel la fonction finish() si il ne reste plus d'ennemis (niveau terminé)
+        (appelé directement par les ennemis)
+
+        """
         self.spawn_enemys()
         if not self.enemy_list:  # check list empty : https://stackoverflow.com/questions/53513/how-do-i-check-if-a-list-is-empty
             if not self.world.enemy_group:  # Plus d'ennemis
                 self.finish()
 
     def spawn_enemys(self):
+        """
+        Fait spawner les ennemis en fonction la liste enemy_list
+        Fait spawner le maximum d'ennemis tout en respectant le nombre d'ennemis max simultanés
+        """
         enemy_spawn_list_lenght = len(self.enemy_list)
         should_spawn_count = self.enemy_max - len(self.world.enemy_group)  # Nb Ennemis manquants
         final_spawn_count = (

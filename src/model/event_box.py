@@ -20,11 +20,19 @@ class EventBox(Block):
         self.check_collisions()
 
     def check_collisions(self):
-
+        """
+        Declanche on_collision quand un sprite present dans les groupes watch_groups rentre en collision
+        """
         for groups in self.watch_groups:
             collided_sprites = pygame.sprite.spritecollide(self, groups, False)
             for sprite in collided_sprites:
                 self.on_collision(sprite)
 
     def on_collision(self, entity):
+        """
+        Est declanché quand un sprite present dans les groupes watch_groups rentre en collision
+        Propriétés:
+        - entity: objet qui est en collision
+        """
+
         pass
