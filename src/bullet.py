@@ -1,8 +1,5 @@
-import random
-
 import pygame
 
-from particles.blood import Blood
 from model.dynamic_object import DynamicObject
 from utils.vector import Vector
 
@@ -12,10 +9,10 @@ class Bullet(DynamicObject):
     Classe qui represente les projectiles
     """
 
-    def __init__(self, world, x, y, velocity: Vector, *groups) -> None:
+    def __init__(self, world, x, y, velocity: Vector, groups: tuple) -> None:
         self.image = pygame.Surface([10, 10])
         self.image.fill((0, 0, 250))
-        super().__init__(world, x, y, 0.01, *groups)
+        super().__init__(world, x, y, 0.01, groups)
 
         self.velocity = velocity
 

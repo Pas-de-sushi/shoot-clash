@@ -1,7 +1,6 @@
 import random
 
 import pygame
-
 from model.dynamic_object import DynamicObject
 from utils.vector import Vector
 
@@ -22,7 +21,7 @@ class Particle(DynamicObject):
     """
 
     def __init__(
-        self, world, x: int, y: int, mass, velocity: Vector, lifetime, *groups
+            self, world, x: int, y: int, mass, velocity: Vector, lifetime, groups: tuple
     ) -> None:
         """
         Declarer self.image avant d'appeler super.init
@@ -34,7 +33,7 @@ class Particle(DynamicObject):
         #        self.image.fill((200, 0, 0))
         # self.image.fill((200, 0, 0))
 
-        super().__init__(world, x, y, mass, *groups)
+        super().__init__(world, x, y, mass, groups)
 
         self.velocity = Vector(velocity.x, velocity.y)
         self.mass = 1
