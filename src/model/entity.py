@@ -9,9 +9,9 @@ class Entity(DynamicObject):
     - recevoir dégats
     """
 
-    def __init__(self, world, x, y, mass: int, max_health: int, *groups) -> None:
+    def __init__(self, world, x, y, mass: int, max_health: int, groups: tuple) -> None:
 
-        super().__init__(world, x, y, mass, *groups)
+        super().__init__(world, x, y, mass, groups)
 
         self.direction = True  # True : l'entitée se dirige vers la droite False gauche
         self.max_health = max_health
@@ -28,7 +28,7 @@ class Entity(DynamicObject):
     def move(self, vector: Vector):
         super(Entity, self).move(vector)
         # Système de vitesse max --> collision avec l'air c'est galère
-        if vector.x > 10 :
+        if vector.x > 10:
             vector.x = 10
         if vector.x < -10:
             vector.x = -10

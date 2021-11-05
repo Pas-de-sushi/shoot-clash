@@ -13,7 +13,7 @@ class Enemy(Entity):
     Classe qui represente les ennemis
     """
 
-    def __init__(self, world, x, y, mass, *groups) -> None:
+    def __init__(self, world, x, y, mass, groups: tuple) -> None:
         self.image = pygame.Surface([20, 20])
         self.image.fill((255, 0, 0))
         self.image.fill((0, 100, 150))
@@ -93,3 +93,7 @@ class Enemy(Entity):
     def set_health(self, new_health):
         super(Enemy, self).set_health(new_health)
         self.image.fill((255 - int(255 * self.health / self.max_health), 100, 150))
+
+    def die(self):
+        super().die()
+        self.world.level.on_enemy_death()

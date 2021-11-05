@@ -8,9 +8,9 @@ class Block(pygame.sprite.Sprite):
     """
 
     def __init__(
-        self, x, y, width, height, color, friction=0.7, *groups
+            self, x, y, width, height, color, groups: tuple, friction=0.7,
     ):  # TODO : probleme valeur par defaut ne marche pas avec groups
-        super().__init__(*groups)
+        super().__init__(groups)
 
         self.image = pygame.Surface([width, height])
         self.image.fill(color)
