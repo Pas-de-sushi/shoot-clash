@@ -84,7 +84,7 @@ class Level:
     def on_enemy_death(self):
         self.spawn_enemys()
         if not self.enemy_list:  # check list empty : https://stackoverflow.com/questions/53513/how-do-i-check-if-a-list-is-empty
-            if not self.world.enemy_group: #Plus d'ennemis
+            if not self.world.enemy_group:  # Plus d'ennemis
                 self.finish()
 
     def spawn_enemys(self):
@@ -101,3 +101,6 @@ class Level:
         self.is_finished = True
         for door in self.world.door_group:
             door.set_locked(False)
+
+    def player_access_door(self):
+        pass  # Next Level

@@ -17,6 +17,7 @@ class Door(EventBox):
         super().on_collision(entity)
         if self.locked == False:
             print('Exit !')
+            self.world.level.player_access_door()
             self.set_locked(True)
 
     def set_locked(self, state):
