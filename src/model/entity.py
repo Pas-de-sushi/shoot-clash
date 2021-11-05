@@ -17,10 +17,6 @@ class Entity(DynamicObject):
         self.max_health = max_health
         self.health = self.max_health
 
-    def update(self):
-        self.check_input()
-        super().update()
-
     def handle_collision(self, old_rect):
         super().handle_collision(old_rect)
         pass

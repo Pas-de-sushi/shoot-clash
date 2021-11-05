@@ -3,13 +3,18 @@ import pygame
 
 class Block(pygame.sprite.Sprite):
     """
-    Block de decors
-    friction: vitesse joueur multiplié par celui-ci lorsqu'il marche dessus
+    Bloc du décors
+
+    Propriétés:
+    - x, y: position du bloc
+    - width, height: taille du bloc
+    - color: couleur du bloc
+    - friction: coeficient de friction (multiplication de la vitesse du joueur)
     """
 
     def __init__(
             self, x, y, width, height, color, groups: tuple, friction=0.7,
-    ):  # TODO : probleme valeur par defaut ne marche pas avec groups
+    ):
         super().__init__(groups)
 
         self.image = pygame.Surface([width, height])
