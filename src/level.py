@@ -7,10 +7,10 @@ from player import Player
 
 class Level:
     """
-    Classe en charge d'initialiser le niveau
+    Classe stockant les informations sur un niveau
     """
 
-    def __init__(self, world):
+    def __init__(self, world) -> None:
         self.world = world
         self.enemy_list = [0, 0, 0, 0, 0, 0, 0, 0,
                            0]  # Liste avec le type et stats enemis qui doivent spawn TODO: Faire vraiment
@@ -18,12 +18,14 @@ class Level:
         self.is_finished = False  # plus d'ennemis, portes ouvertes
         self.load_level()
 
-    def load_level(self):
-        # Block(300, 300, 100, 400, (100, 255, 100), 1.5, self.world.map_group)
-        # Block(0, 200, 300, 100, (255, 255, 255), BLOCK_FRICTION, self.world.map_group)
-        # Block(400, 150, 400, 400, (255, 255, 255), BLOCK_FRICTION, self.world.map_group)
-        # Block(800, 50, 100, 100, (255, 255, 255), BLOCK_FRICTION, self.world.map_group)
-        # Block(0, 50, 100, 150, (255, 255, 255), BLOCK_FRICTION, self.world.map_group)
+    def load_level(self) -> None:
+        """
+        Initialisation du niveau.
+
+        - Création des blocs
+        - Création du personnage
+        - Création des ennemis
+        """
         Block(
             0,
             0,
@@ -31,7 +33,6 @@ class Level:
             10,
             (255, 255, 255),
             self.world.map_group,
-            BLOCK_FRICTION,
         )
         Block(
             0,
@@ -40,7 +41,6 @@ class Level:
             10,
             (255, 255, 255),
             self.world.map_group,
-            BLOCK_FRICTION,
         )
         Block(
             0,
@@ -49,7 +49,6 @@ class Level:
             SCREEN_HEIGHT - 10,
             (255, 255, 255),
             self.world.map_group,
-            BLOCK_FRICTION,
         )
         Block(
             SCREEN_WIDTH - 100,
@@ -58,8 +57,7 @@ class Level:
             SCREEN_HEIGHT - 10,
             (255, 255, 255),
             self.world.map_group,
-            BLOCK_FRICTION,
-        )  # Droite
+        )
         Block(
             0,
             SCREEN_HEIGHT - 200,
@@ -67,7 +65,6 @@ class Level:
             10,
             (255, 255, 255),
             self.world.map_group,
-            BLOCK_FRICTION,
         )
         Door(
             self.world,
@@ -91,21 +88,23 @@ class Level:
 
         """
         self.spawn_enemys()
-        if not self.enemy_list:  # check list empty : https://stackoverflow.com/questions/53513/how-do-i-check-if-a-list-is-empty
-            if not self.world.enemy_group:  # Plus d'ennemis
-                self.finish()
+        if not self.enemy_list and not self.world.enemy_group:  # On vérifie si il n'y a plus d'ennemis
+            self.finish()
 
     def spawn_enemys(self):
         """
-        Fait spawner les ennemis en fonction la liste enemy_list
-        Fait spawner le maximum d'ennemis tout en respectant le nombre d'ennemis max simultanés
+        Fait apparaitre les ennemis en fonction la liste enemy_list
+        Fait apparaitre le maximum d'ennemis tout en respectant le nombre d'ennemis max simultanés
         """
-        enemy_spawn_list_lenght = len(self.enemy_list)
-        should_spawn_count = self.enemy_max - len(self.world.enemy_group)  # Nb Ennemis manquants
-        final_spawn_count = (
-            enemy_spawn_list_lenght if enemy_spawn_list_lenght < should_spawn_count else should_spawn_count)
-        # Limite si il n'y a plus d'elements
-        for i in range(final_spawn_count):
+        # Nombre d'ennemis manquants à faire apparaitre
+        missing_enemys = self.enemy_max - len(self.world.enemy_group)
+        # Taille de la liste d'ennemis
+        enemy_list_size = len(self.enemy_list)
+        # Nombre d'ennemis à faire apparaitre
+        spawn_enemys = min(missing_enemys, enemy_list_size)
+
+        # Fait apparaitre les ennemis
+        for i in range(spawn_enemys):
             Enemy(self.world, 10, 50 * (i + 1), 1, self.world.enemy_group)
             self.enemy_list.pop()
 
@@ -115,4 +114,4 @@ class Level:
             door.set_locked(False)
 
     def player_access_door(self):
-        pass  # Next Level
+        pass  # Niveau terminé

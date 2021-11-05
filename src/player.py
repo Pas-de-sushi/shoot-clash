@@ -1,5 +1,6 @@
 import pygame
 
+from constants import *
 from bullet import Bullet
 from model.entity import Entity
 from utils.map_collision import check_map_collision
@@ -8,69 +9,83 @@ from utils.vector import Vector
 
 class Player(Entity):
     """
-    Classe qui represente le joueur
+    Classe qui represente le joueur. Hérite de la classe Entity.
+
+    Propriétés:
+    - world: instance de la classe World
+    - x, y: position du joueur
+    - mass: masse du joueur
+    - groups: tuple des groupes d'entités
     """
 
-    def __init__(self, world, x, y, mass, groups: tuple) -> None:
+    def __init__(self, world, x, y, mass, groups) -> None:
         self.image = pygame.Surface([10, 15])
         self.image.fill((0, 255, 0))
-        super(Player, self).__init__(world, x, y, mass, 100, groups)
 
-        self.jump_count = 0
-        self.max_jump = 1
-        self._old_jump_state = False  # Detection relachement
+        super().__init__(world, x, y, mass, 100, groups)
 
-        self.shoot_time = 0
+        self.jump_count = 0  # Nombre de sauts effectués
+        self.direction = "right"  # Direction du joueur (left/right)
+        self.previous_jump = False  # Permet d'éviter un appui long pour le saut
+        self.last_shoot = 0  # Temps depuis le dernier tir
+
         self.shoot_delay = 100  # une balle sec
 
     def update(self):
-        self.check_input()
-        super().update()
-
-    def check_input(self):
         """
-        Controles du joueur
+        Mise à jour de l'état du joueur.
+        Gestion des touches
         """
+        
+        # Récupération des touches pressées par l'utilisateur
         pressed_keys = pygame.key.get_pressed()
-        move = Vector(0, 0)
+        movement = Vector(0, 0)
+
+        # Déplacement gauche
         if pressed_keys[pygame.K_LEFT]:
-            move.x -= 1
-            self.direction = False
+            movement.x = -SPEED
+            self.direction = "left"
+
+        # Déplacement droit
         if pressed_keys[pygame.K_RIGHT]:
-            move.x += 1
-            self.direction = True
+            movement.x += SPEED
+            self.direction = "right"
 
-        if pressed_keys[pygame.K_UP]:
-            if not self._old_jump_state:  # Attend relachement de la touche
-                self._old_jump_state = True
-                if self.jump_count < self.max_jump:
-                    move.y -= 10
-                    self.jump_count += 1
+        # Saut
+        if pressed_keys[pygame.K_UP] and not self.previous_jump:
+            if self.jump_count < MAX_JUMP:
+                movement.y = -JUMP_HEIGHT
+                self.jump_count += 1
 
-        else:
-            self._old_jump_state = False
-
-        if self.shoot_time >= self.shoot_delay:
+        # Tir
+        if self.last_shoot >= SHOOT_DELAY:
             if pressed_keys[pygame.K_SPACE]:
                 self.shoot()
-                self.shoot_time = 0
+                self.last_shoot = 0
         else:
-            self.shoot_time += self.world.elapsed
+            self.last_shoot += self.world.elapsed
 
-        self.velocity += move
+        self.velocity += movement
+        super().update()
 
     def shoot(self):
-        bullet = Bullet(
+        """
+        Gestion du tir.
+        """
+        if self.direction == "left":
+            velocity = -BULLET_SPEED
+            self.velocity -= Vector(-3, 0)
+        elif self.direction == "right":
+            velocity = BULLET_SPEED
+            self.velocity -= Vector(3, 0)
+
+        Bullet(
             self.world,
             self.rect.x,
             self.rect.y,
-            Vector(self.velocity.x + (15 if self.direction else -15), 0),
+            Vector(velocity, 0),
             (self.world.bullet_group),
         )
-        self.velocity = self.velocity + (bullet.velocity * (-0.5)) * (
-                bullet.mass / self.mass
-        )
-        # coef 0,5 de recul|Recul du joueur TODO: Suivant type arme ?
 
     def handle_collision(self, old_rect):
         self.rect = check_map_collision(
