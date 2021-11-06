@@ -10,7 +10,7 @@ class Particle(DynamicObject):
     Classe représentant une particule qui se fixe sur le terrain.
 
     Paramètres:
-        world: le monde dans lequel la particule est créée
+        scene: la scene dans lequel la particule est créée
         x, y: coordonnées de la particule
         mass: la masse de la particule
         velocity: la vitesse de la particule
@@ -20,7 +20,7 @@ class Particle(DynamicObject):
     """
 
     def __init__(
-            self, world, x: int, y: int, mass, velocity: Vector, lifetime, groups
+            self, scene, x: int, y: int, mass, velocity: Vector, lifetime, groups
     ) -> None:
         """
         Constructeur de la classe Particle.
@@ -32,7 +32,7 @@ class Particle(DynamicObject):
             self.image = pygame.Surface([5, 5])
             self.image.fill((200, 0, 0))
         """
-        super().__init__(world, x, y, mass, groups)
+        super().__init__(scene, x, y, mass, groups)
 
         self.velocity = Vector(velocity.x, velocity.y)
         self.mass = 1
@@ -54,7 +54,7 @@ class Particle(DynamicObject):
 
         # Si la particule est infinie, elle ne se détruit pas
         if self.lifetime != -1:
-            new_lifetime = self.lifetime - self.world.elapsed  # Met à jour la durée de vie
+            new_lifetime = self.lifetime - self.scene.elapsed  # Met à jour la durée de vie
             if new_lifetime < 0:  # Si la durée de vie est inférieure à 0, la particule est détruite
                 self.lifetime = 0
                 self.kill()
@@ -66,6 +66,6 @@ class Particle(DynamicObject):
         """
         Fige la particule lorsqu'elle entre en collision avec le terrain.
         """
-        if pygame.sprite.spritecollideany(self, self.world.map_group):
+        if pygame.sprite.spritecollideany(self, self.scene.map_group):
             self.velocity = Vector(0, 0)
             self.mass = 0  # Ignore la gravité

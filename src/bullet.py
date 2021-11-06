@@ -9,7 +9,7 @@ class Bullet(DynamicObject):
     Classe représentant une balle (projectile).
 
     Paramètres:
-        world: le monde dans lequel la balle est créée
+        scene: la scene dans lequel la balle est créée
         x: la position en x de la balle
         y: la position en y de la balle
         velocity: la vitesse de la balle
@@ -18,33 +18,33 @@ class Bullet(DynamicObject):
 
     """
 
-    def __init__(self, world, x, y, velocity: Vector, groups, damage) -> None:
+    def __init__(self, scene, x, y, velocity: Vector, groups, damage) -> None:
         self.image = pygame.Surface([10, 10])
         self.image.fill((250, 250, 0))
-        super().__init__(world, x, y, 0.01, groups)
+        super().__init__(scene, x, y, 0.01, groups)
 
         self.velocity = velocity
         self.damage = damage
 
     def handle_collision(self, old_rect) -> pygame.rect:
         """
-        Gestion des collisions entre la balle et les autres objets du monde.
+        Gestion des collisions entre la balle et les autres objets de la scene.
         Détruit la balle si elle touche un autre objet.
         """
 
-        for entity in pygame.sprite.spritecollide(self, self.world.enemy_group, False):
+        for entity in pygame.sprite.spritecollide(self, self.scene.enemy_group, False):
             # entity.kill()
             entity.receive_damage(self.damage, self)
             # entity.velocity = entity.velocity + self.velocity * (self.mass / entity.mass)
             self.kill()
-        if pygame.sprite.spritecollideany(self, self.world.map_group):
+        if pygame.sprite.spritecollideany(self, self.scene.map_group):
             # for i in range(10):
-            #    Blood(self.world, self.rect.x + random.randint(0, self.rect.width),
+            #    Blood(self.scene, self.rect.x + random.randint(0, self.rect.width),
             #          self.rect.y + random.randint(0, self.rect.height),
-            #          Vector(self.velocity.x * (-1), self.velocity.y * (-1)), self.world.particle_group)
-            # Blood(self.world, self.rect.x + random.randint(0, self.rect.width),
+            #          Vector(self.velocity.x * (-1), self.velocity.y * (-1)), self.scene.particle_group)
+            # Blood(self.scene, self.rect.x + random.randint(0, self.rect.width),
             #      self.rect.y + random.randint(0, self.rect.height), Vector(self.velocity.x * 0.1, 0),
-            #      self.world.particle_group)
+            #      self.scene.particle_group)
             self.kill()
 
 class Weapon:
@@ -66,12 +66,12 @@ class Weapon:
         self.damage = damage
         self.velocity = velocity
 
-    def shoot(self, world, entity_rect_x, entity_rect_y, entity_direction, group):
+    def shoot(self, scene, entity_rect_x, entity_rect_y, entity_direction, group):
         """
         Tire avec l'arme.
 
         Paramètres:
-            world: le monde dans lequel la balle est créée
+            scene: la scene dans lequel la balle est créée
             entity_rect_x: la position en x de l'entité qui tire
             entity_rect_y: la position en y de l'entité qui tire
             entity_direction: la direction de l'entité qui tire
@@ -79,7 +79,7 @@ class Weapon:
         """
 
         Bullet(
-            world,
+            scene,
             entity_rect_x,
             entity_rect_y,
             Vector(self.velocity.x if entity_direction == "right" else -self.velocity.x, 0),
