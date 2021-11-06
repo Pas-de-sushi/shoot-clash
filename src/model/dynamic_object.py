@@ -5,36 +5,61 @@ from utils.vector import Vector
 
 class DynamicObject(pygame.sprite.Sprite):
     """
-    Classe qui represente les mouvants
+    Classe représentant un objet qui peut bouger.
+
+    Paramètres:
+        world: monde dans lequel se trouve l'objet
+        x, y: coordonnées de l'objet
+        mass: masse de l'objet
+        groups: groupes dans lesquels se trouve l'objet
     """
 
-    def __init__(self, world, x, y, mass, groups: tuple) -> None:
+    def __init__(self, world, x, y, mass, groups) -> None:
         """
-        Creer  self.image avant d'appeler
+        Constructeur de la classe DynamicObject.
+
+        Attention, il faut initialiser self.image avant de faire appel au constructeur.
         """
         super().__init__(groups)
-        assert (
-            self.image is not None,
-            "Initialisez self.image : pygame.Surface avant super.__init__",
-        )
+
+        # On vérfie que l'image est bien initialisée
+        assert self.image is not None, "Initialisez self.image : pygame.Surface avant super.__init__"
+
+        # Positionne l'objet
         self.rect = self.image.get_rect()
         self.rect.move_ip(x, y)
+
         self.velocity = Vector(0, 0)
-        self.mass = mass  # Sert pour la gravité et le transfer de vitesse (collisions)
+        self.mass = mass  # Utilisée pour la gravité et les collisions
         self.world = world
 
     def update(self):
+        """
+        Met à jour l'objet. Cette méthode est appelée par pygame.
+
+        - Gestion de la gravité
+        - Gestion des collisions
+        """
         super().update(self)
+
+        # Sauvegarde de la position avant la mise à jour
         old_rect = self.rect
+
+        # Gravité
         self.velocity.y += self.mass
         self.move(self.velocity)
+
+        # Collisions
         self.handle_collision(old_rect)
 
     def move(self, vector: Vector):
+        """
+        Déplace l'objet selon un vecteur.
+        """
         self.rect = self.rect.move(vector.x, vector.y)
 
     def handle_collision(self, old_rect):
         """
-        Executé a la fin de update
+        Méthode qui gère les collisions. Doit être implémentée par les classes filles.
         """
         pass
