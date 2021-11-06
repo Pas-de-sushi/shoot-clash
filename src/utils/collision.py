@@ -1,7 +1,7 @@
 import pygame
 
 
-def check_map_collision(
+def check_collision(
     map_group: pygame.sprite.Group,
     old_rect: pygame.rect,
     new_rect: pygame.rect,
@@ -27,7 +27,7 @@ def check_map_collision(
 
     corrected_rect = new_rect  # Position du sprite après la collision
 
-    for block in map_group:  # Collision avec les blocs de la carte
+    for block in map_group:  # Collision avec les blocs du groupe
         if new_rect.colliderect(block) and new_rect != block:
             if (new_rect.x + new_rect.width > block.rect.x) and (
                 old_rect.x + old_rect.width <= block.rect.x

@@ -4,7 +4,7 @@ import pygame
 
 from model.entity import Entity
 from particles.blood import Blood
-from utils.map_collision import check_map_collision
+from utils.collision import check_collision
 from utils.vector import Vector
 
 
@@ -47,7 +47,7 @@ class Enemy(Entity):
         """
 
         # Collision avec les blocs
-        self.rect = check_map_collision(
+        self.rect = check_collision(
             self.world.map_group,
             old_rect,
             self.rect,
@@ -58,7 +58,7 @@ class Enemy(Entity):
         )
 
         # Collision avec les autres ennemis
-        self.rect = check_map_collision(
+        self.rect = check_collision(
             self.world.enemy_group,
             old_rect,
             self.rect,
@@ -69,7 +69,7 @@ class Enemy(Entity):
         )
 
         # Collision avec le joueur
-        self.rect = check_map_collision(
+        self.rect = check_collision(
             self.world.player_group,
             old_rect,
             self.rect,
