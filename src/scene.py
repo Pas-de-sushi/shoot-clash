@@ -56,12 +56,13 @@ class Level(Scene):
     Méthodes à implémenter pour les classes filles:
         load_level(self): initialisation du niveau (création des blocs, personnage, ennemis, etc.).
         get_ennemy_list(self): retourne la liste des ennemis qui doivent apparaitre.
+        get_enemy_max(self): retourne le nombre d'ennemis maximum simultanés.
     """
 
     def __init__(self, screen) -> None:
         super().__init__(screen)
 
-        self.enemy_max = 5  # Nombre maximal d'ennemis simultanés
+        self.enemy_max = self.get_enemy_max()  # Nombre maximal d'ennemis simultanés
         self.enemy_list = self.get_enemy_list()  # Liste des ennemis à faire apparaitre
 
         # Groupes de sprites
@@ -93,6 +94,14 @@ class Level(Scene):
         """
         pass
 
+    def get_enemy_max(self):
+        """
+        Retourne le nombre d'ennemis maximum simultanés.
+
+        Doit être implémenté dans les classes filles.
+        """
+        return 5
+
     def next_level(self):
         """"
         Passe au niveau suivant. Définir la scène suivante.
@@ -106,11 +115,11 @@ class Level(Scene):
 
         # Affichage des groupes de sprites
         self.map_group.draw(self.screen)
+        self.event_box_group.draw(self.screen)
         self.particle_group.draw(self.screen)
+        self.player_group.draw(self.screen)
         self.enemy_group.draw(self.screen)
         self.bullet_group.draw(self.screen)
-        self.player_group.draw(self.screen)
-        self.event_box_group.draw(self.screen)
 
         # Affichage de la barre de vie du joueur
         for player in self.player_group:

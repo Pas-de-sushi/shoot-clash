@@ -1,13 +1,14 @@
+from random import randint
+
 from block import Block
 from bullet import Weapon
 from constants import *
 from door import Door
 from player import Player
 from scene import EnemySpawner, Level
-from scenes.level2 import Level2
 
 
-class Level1(Level):
+class Level2(Level):
     def load_level(self) -> None:
         # Bordures du niveau
         Block(
@@ -29,15 +30,15 @@ class Level1(Level):
         Block(
             0,
             10,
-            10,
+            50,
             SCREEN_HEIGHT - 10,
             (255, 255, 255),
             self.map_group,
         )
         Block(
-            SCREEN_WIDTH - 100,
+            SCREEN_WIDTH - 50,
             10,
-            100,
+            50,
             SCREEN_HEIGHT - 10,
             (255, 255, 255),
             self.map_group,
@@ -45,40 +46,63 @@ class Level1(Level):
 
         # Plateformes
         Block(
+            SCREEN_WIDTH - 500,
+            SCREEN_HEIGHT - 100,
+            500,
+            100,
+            (255, 255, 255),
+            self.map_group,
+        )
+        Block(
             0,
-            SCREEN_HEIGHT - 200,
-            SCREEN_WIDTH - 300,
-            20,
+            SCREEN_HEIGHT - 170,
+            SCREEN_WIDTH - 600,
+            15,
+            (255, 255, 255),
+            self.map_group,
+        )
+        Block(
+            SCREEN_WIDTH - 430,
+            SCREEN_HEIGHT - 220,
+            75,
+            10,
+            (255, 255, 255),
+            self.map_group,
+        )
+        Block(
+            SCREEN_WIDTH - 250,
+            SCREEN_HEIGHT - 270,
+            250,
+            10,
             (255, 255, 255),
             self.map_group,
         )
 
-        # Porte
+        # Portes
         Door(
             self,
-            30,
-            SCREEN_HEIGHT - 60,
+            SCREEN_WIDTH - 100,
+            SCREEN_HEIGHT - 320,
             50,
             50,
             (self.event_box_group, self.door_group)
         )
 
-        w1 = Weapon(cadence=1500, recoil=3, damage=100)
-        Player(self, 10, 10, 1, self.player_group, weapon=w1)
+        w2 = Weapon(cadence=300, recoil=0.5, damage=30)
+        Player(self, 80, SCREEN_HEIGHT - 50, 1, self.player_group, weapon=w2)
 
     def get_enemy_list(self):
         enemy_list = []
 
-        for i in range(10):
+        for i in range(5):
             enemy_list.append(
-                EnemySpawner(self, 10, 50 * (i + 1), 1, 20)
+                EnemySpawner(self, SCREEN_WIDTH - 200, randint(50, 150), 1, 30)
+            )
+            enemy_list.append(
+                EnemySpawner(self, 50, randint(50, 150), 1, 30)
             )
 
         return enemy_list
 
     def get_enemy_max(self):
-        return 5
-
-    def next_level(self):
-        self.is_finished = True
-        self.next_scene = Level2(self.screen)
+        return 3
