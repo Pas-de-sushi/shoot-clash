@@ -101,12 +101,12 @@ class Player(Entity):
     def right(self, block):
         self.velocity.x *= -1
         self.velocity *= block.friction
-        self.direction = False
+        self.direction = "left"
 
     def left(self, block):
         self.velocity.x *= -1
         self.velocity *= block.friction
-        self.direction = True
+        self.direction = "left"
 
     def top(self, block):
         self.velocity.y = 0
