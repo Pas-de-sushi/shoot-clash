@@ -80,8 +80,8 @@ class Level:
 
     def on_enemy_death(self):
         """
-        Est appelé lorsqu'un ennemi meurt 
-        puis 
+        Est appelé lorsqu'un ennemi meurt
+        puis
         - Fait spawner un nouvel ennemis si besoin
         - appel la fonction finish() si il ne reste plus d'ennemis (niveau terminé)
         (appelé directement par les ennemis)
@@ -105,7 +105,7 @@ class Level:
 
         # Fait apparaitre les ennemis
         for i in range(spawn_enemys):
-            Enemy(self.world, 10, 50 * (i + 1), 1, self.world.enemy_group)
+            Enemy(self.world, 10, 50 * (i + 1), 1, 20, self.world.enemy_group)
             self.enemy_list.pop()
 
     def finish(self):
