@@ -70,7 +70,7 @@ class Player(Entity):
 
     def shoot(self):
         """
-        Gestion du tir.
+        Gestion du tir : création d'une balle et recul sur le joueur.
         """
         if self.direction == "left":
             velocity = -BULLET_SPEED
@@ -88,6 +88,9 @@ class Player(Entity):
         )
 
     def handle_collision(self, old_rect):
+        """
+        Gestion des collisions entre le joueur et les blocs.
+        """
         self.rect = check_map_collision(
             self.world.map_group,
             old_rect,
@@ -99,19 +102,31 @@ class Player(Entity):
         )
 
     def right(self, block):
+        """
+        Collision avec un bloc à droite du joueur.
+        """
         self.velocity.x *= -1
         self.velocity *= block.friction
         self.direction = "left"
 
     def left(self, block):
+        """
+        Collision avec un bloc à gauche du joueur.
+        """
         self.velocity.x *= -1
         self.velocity *= block.friction
         self.direction = "left"
 
     def top(self, block):
+        """
+        Collision avec un bloc en haut du joueur.
+        """
         self.velocity.y = 0
 
     def bottom(self, block):
+        """
+        Collision avec un bloc en bas du joueur.
+        """
         self.velocity.y *= -0.25
         self.velocity *= block.friction
         self.jump_count = 0

@@ -3,8 +3,8 @@ from model.event_box import EventBox
 
 class Door(EventBox):
     """
-    Porte
-    permet au joueur de passer au niveau superieur
+    Porte qui permet de passer au niveau suivant.
+    Se déclanche lorsque le joueur est entré en collision avec.
 
     Propriétés:
     - x, y: position de la porte

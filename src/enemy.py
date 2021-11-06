@@ -81,7 +81,7 @@ class Enemy(Entity):
     def receive_damage(self, damage, entity):
         self.velocity = self.velocity + entity.velocity * (entity.mass / self.mass)
         for i in range(20):
-            Blood.random_direction(
+            Blood(
                 self.world,
                 self.rect.x + random.randint(0, self.rect.width),
                 self.rect.y + random.randint(0, self.rect.height),

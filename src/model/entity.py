@@ -4,41 +4,65 @@ from utils.vector import Vector
 
 class Entity(DynamicObject):
     """
-    Classe qui represente les objets dynamiques Vivants
-    - vie
-    - recevoir dégats
+    Classe représentant un objet de jeu "vivant".
+
+    Paramètres:
+        world: le monde dans lequel se trouve l'entité
+        x: la position en x de l'entité
+        y: la position en y de l'entité
+        mass: la masse de l'entité
+        max_health: la vie maximum de l'entité
+        groups: les groupes dans lesquels se trouve l'entité
+
+    Propriétés :
+        - direction : direction de l'entité ("left" ou "right")
+        - max_health : la vie maximum de l'entitée
+        - health : la vie actuelle de l'entitée
     """
 
     def __init__(self, world, x, y, mass: int, max_health: int, groups: tuple) -> None:
-
-        super().__init__(world, x, y, mass, groups)
+        super().__init__(world, x, y, mass, groups)  # Appel du constructeur de la classe parente
 
         self.direction = True  # True : l'entitée se dirige vers la droite False gauche
         self.max_health = max_health
         self.health = self.max_health
 
-    def handle_collision(self, old_rect):
-        super().handle_collision(old_rect)
-        pass
-
     def move(self, vector: Vector):
+        """
+        Déplace l'entité d'un vecteur donné.
+        Limite la vélocité à 10.
+        """
         super(Entity, self).move(vector)
-        # Système de vitesse max --> collision avec l'air c'est galère
+        
+        # Limite la vélocité à 10
         if vector.x > 10:
             vector.x = 10
         if vector.x < -10:
             vector.x = -10
 
     def receive_damage(self, damage):
+        """
+        Méthode appelée lorsqu'une entité est attaquée.
+
+        Paramètres:
+            damage : le nombre de dégâts reçus
+        """
         self.set_health(self.health - damage)
 
     def set_health(self, new_health):
+        """
+        Définit la vie de l'entité.
+
+        Si la vie est inférieure à 0, l'entité meurt (méthode die()).
+        """
         if new_health > 0:
             self.health = new_health
-
         else:
             self.health = 0
             self.die()
 
     def die(self):
+        """
+        Méthode appellée lorsque l'entité meurt.
+        """
         self.kill()
