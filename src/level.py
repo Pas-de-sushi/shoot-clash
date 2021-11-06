@@ -3,6 +3,7 @@ from constants import *
 from door import Door
 from enemy import Enemy
 from player import Player
+from bullet import *
 
 
 class Level:
@@ -74,7 +75,9 @@ class Level:
             50,
             (self.world.event_box_group, self.world.door_group)
         )
-        Player(self.world, 10, 10, 1, self.world.player_group)
+
+        w1 = Weapon(cadence=10, recoil=1, damage=20, reload_time=1)
+        Player(self.world, 10, 10, 1, self.world.player_group, weapon=w1)
 
         self.spawn_enemys()
 

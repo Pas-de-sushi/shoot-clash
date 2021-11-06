@@ -1,7 +1,7 @@
 import pygame
 
 from constants import *
-from bullet import Bullet
+from bullet import Bullet, Weapon
 from enemy import Enemy
 from model.entity import Entity
 from utils.collision import check_collision
@@ -19,7 +19,7 @@ class Player(Entity):
     - groups: tuple des groupes d'entités
     """
 
-    def __init__(self, world, x, y, mass, groups) -> None:
+    def __init__(self, world, x, y, mass, groups, weapon) -> None:
         self.image = pygame.Surface([10, 15])
         self.image.fill((0, 255, 0))
 
@@ -31,6 +31,8 @@ class Player(Entity):
         self.last_shoot = 0  # Temps depuis le dernier tir
 
         self.friction = 0.5
+        self.weapon = weapon
+
 
     def update(self):
         """
@@ -73,20 +75,18 @@ class Player(Entity):
         """
         Gestion du tir : création d'une balle et recul sur le joueur.
         """
-        if self.direction == "left":
-            velocity = -BULLET_SPEED
-            self.velocity -= Vector(-3, 0)
-        elif self.direction == "right":
-            velocity = BULLET_SPEED
-            self.velocity -= Vector(3, 0)
 
-        Bullet(
+        self.weapon.shoot(
             self.world,
             self.rect.x,
             self.rect.y,
-            Vector(velocity, 0),
+            self.velocity.x,
+            self.direction,
             (self.world.bullet_group),
         )
+
+        # Recul de l'arme
+        self.velocity.x += (self.weapon.recoil * (-3 if self.direction else 3)) / self.mass
 
     def show_health(self):
         """

@@ -14,7 +14,7 @@ class Bullet(DynamicObject):
         y: la position en y de la balle
         velocity: la vitesse de la balle
         groups: les groupes de sprites dans lesquels la balle doit apparaître
-    
+
 
     """
 
@@ -45,3 +45,24 @@ class Bullet(DynamicObject):
             #      self.rect.y + random.randint(0, self.rect.height), Vector(self.velocity.x * 0.1, 0),
             #      self.world.particle_group)
             self.kill()
+
+class Weapon:
+    """
+    Armes
+    """
+    def __init__(self, cadence, recoil, damage, reload_time, velocity=Vector(22,0)) -> None:
+        self.cadence = cadence
+        self.recoil = recoil
+        self.damage = damage
+        self.reload_time = reload_time
+        self.velocity = velocity
+
+    def shoot(self, world, entity_rect_x, entity_rect_y,
+        entity_velocity_x, entity_direction, group):
+        bullet = Bullet(
+            world,
+            entity_rect_x,
+            entity_rect_y,
+            Vector(self.velocity.x if entity_direction == "right" else -self.velocity.x, 0),
+            group
+        )
