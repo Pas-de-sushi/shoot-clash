@@ -12,5 +12,6 @@ MAX_JUMP = 1  # Nombre maximal de sauts consécutifs
 JUMP_HEIGHT = 15  # Hauteur de saut
 SPEED = 1  # Vitesse de déplacement
 PLAYER_MAX_HEALTH = 100  # Nombre de vies maximum du joueur
+DAMAGE_COOLDOWN = 1000  # Temps entre deux dégats recus (en ms)
 
 BULLET_SPEED = 20
