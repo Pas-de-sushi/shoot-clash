@@ -1,5 +1,7 @@
 import pygame
 
+import random
+from particles.wall_particle import Wall
 from model.dynamic_object import DynamicObject
 from utils.vector import Vector
 
@@ -38,13 +40,15 @@ class Bullet(DynamicObject):
             # entity.velocity = entity.velocity + self.velocity * (self.mass / entity.mass)
             self.kill()
         if pygame.sprite.spritecollideany(self, self.world.map_group):
-            # for i in range(10):
-            #    Blood(self.world, self.rect.x + random.randint(0, self.rect.width),
-            #          self.rect.y + random.randint(0, self.rect.height),
-            #          Vector(self.velocity.x * (-1), self.velocity.y * (-1)), self.world.particle_group)
-            # Blood(self.world, self.rect.x + random.randint(0, self.rect.width),
-            #      self.rect.y + random.randint(0, self.rect.height), Vector(self.velocity.x * 0.1, 0),
-            #      self.world.particle_group)
+            for i in range(13):
+                Wall(
+                    self.world,
+                    old_rect.x + random.randint(0, self.rect.width),
+                    old_rect.y + random.randint(0, self.rect.height),
+                    Vector(self.velocity.x // 7 * (-1), self.velocity.y // 6 * (-1)),
+                    300, # 1000 = 1 sec
+                    self.world.particle_group,
+            )
             self.kill()
 
 class Weapon:

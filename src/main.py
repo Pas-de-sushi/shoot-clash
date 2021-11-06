@@ -24,3 +24,4 @@ while running:
     world.draw()
 
     pygame.display.update()
+  
