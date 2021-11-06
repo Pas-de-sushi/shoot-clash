@@ -2,6 +2,7 @@ import pygame
 
 from constants import *
 from bullet import Bullet
+from enemy import Enemy
 from model.entity import Entity
 from utils.map_collision import check_map_collision
 from utils.vector import Vector
@@ -22,21 +23,21 @@ class Player(Entity):
         self.image = pygame.Surface([10, 15])
         self.image.fill((0, 255, 0))
 
-        super().__init__(world, x, y, mass, 100, groups)
+        super().__init__(world, x, y, mass, PLAYER_MAX_HEALTH, groups)
 
         self.jump_count = 0  # Nombre de sauts effectués
         self.direction = "right"  # Direction du joueur (left/right)
         self.previous_jump = False  # Permet d'éviter un appui long pour le saut
         self.last_shoot = 0  # Temps depuis le dernier tir
 
-        self.shoot_delay = 100  # une balle sec
+        self.friction = 0.5
 
     def update(self):
         """
         Mise à jour de l'état du joueur.
-        Gestion des touches
+        Gestion des touches.
         """
-        
+
         # Récupération des touches pressées par l'utilisateur
         pressed_keys = pygame.key.get_pressed()
         movement = Vector(0, 0)
@@ -87,12 +88,45 @@ class Player(Entity):
             (self.world.bullet_group),
         )
 
+    def show_health(self):
+        """
+        Affiche la barre de vie du joueur.
+        """
+
+        # Pourcentage de vie du joueur
+        health_percent = self.health / PLAYER_MAX_HEALTH
+
+        # Milieu de la position x du joueur
+        x = self.rect.x + self.rect.width / 2
+        # Taille de la barre en fonction de la vie du joueur
+        width = 40 * (self.health / PLAYER_MAX_HEALTH)
+        # Couleur de la barre en fonction de la vie du joueur
+        color = (255 - health_percent * 255, health_percent * 255, 0)
+
+        pygame.draw.rect(
+            self.world.screen,
+            color,
+            (x - 20, self.rect.y - 15, width, 3),
+        )
+
     def handle_collision(self, old_rect):
         """
         Gestion des collisions entre le joueur et les blocs.
         """
+        # Collision avec les blocs
         self.rect = check_map_collision(
             self.world.map_group,
+            old_rect,
+            self.rect,
+            self.right,
+            self.left,
+            self.top,
+            self.bottom,
+        )
+
+        # Collision avec les ennemis
+        self.rect = check_map_collision(
+            self.world.enemy_group,
             old_rect,
             self.rect,
             self.right,
@@ -108,6 +142,7 @@ class Player(Entity):
         self.velocity.x *= -1
         self.velocity *= block.friction
         self.direction = "left"
+        self.enemy_collision(block)
 
     def left(self, block):
         """
@@ -115,13 +150,15 @@ class Player(Entity):
         """
         self.velocity.x *= -1
         self.velocity *= block.friction
-        self.direction = "left"
+        self.direction = "right"
+        self.enemy_collision(block)
 
     def top(self, block):
         """
         Collision avec un bloc en haut du joueur.
         """
         self.velocity.y = 0
+        self.enemy_collision(block)
 
     def bottom(self, block):
         """
@@ -130,3 +167,13 @@ class Player(Entity):
         self.velocity.y *= -0.25
         self.velocity *= block.friction
         self.jump_count = 0
+        self.enemy_collision(block)
+
+    def enemy_collision(self, block):
+        """
+        Gère la collision avec un ennemi.
+        En cas de collision, le joueur perds de la vie et est repoussé.
+        """
+        if isinstance(block, Enemy):
+            self.receive_damage(block.damages)
+            self.velocity *= 5

@@ -23,7 +23,7 @@ class Entity(DynamicObject):
     def __init__(self, world, x, y, mass: int, max_health: int, groups) -> None:
         super().__init__(world, x, y, mass, groups)  # Appel du constructeur de la classe parente
 
-        self.direction = True  # True : l'entitée se dirige vers la droite False gauche
+        self.direction = "right"
         self.max_health = max_health
         self.health = self.max_health
 

@@ -43,6 +43,10 @@ class World:
         self.player_group.draw(self.screen)
         self.event_box_group.draw(self.screen)
 
+        # Affichage de la barre de vie du joueur
+        for player in self.player_group:
+            player.show_health()
+
     def update(self, elapsed: int):
         """
         Mise à jour de tous les éléments du jeu (déplacements, physique, etc.)
