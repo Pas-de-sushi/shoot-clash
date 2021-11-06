@@ -13,7 +13,7 @@ class Enemy(Entity):
     Classe représentant un ennemi.
 
     Paramètres:
-        world: le monde dans lequel se trouve l'ennemi
+        scene: la scene dans lequel se trouve l'ennemi
         x: la position en x de l'ennemi
         y: la position en y de l'ennemi
         mass: la masse de l'ennemi
@@ -21,12 +21,12 @@ class Enemy(Entity):
         groups: les groupes dans lesquels l'ennemi doit être ajouté
     """
 
-    def __init__(self, world, x, y, mass, damages, groups) -> None:
+    def __init__(self, scene, x, y, mass, damages, groups) -> None:
         self.image = pygame.Surface([20, 20])
         self.image.fill((255, 0, 0))
         self.image.fill((0, 100, 150))
 
-        super(Enemy, self).__init__(world, x, y, mass, 100, groups)
+        super(Enemy, self).__init__(scene, x, y, mass, 100, groups)
         self.friction = 0.5
         self.damages = damages
 
@@ -48,7 +48,7 @@ class Enemy(Entity):
 
         # Collision avec les blocs
         self.rect = check_collision(
-            self.world.map_group,
+            self.scene.map_group,
             old_rect,
             self.rect,
             self.right,
@@ -59,7 +59,7 @@ class Enemy(Entity):
 
         # Collision avec les autres ennemis
         self.rect = check_collision(
-            self.world.enemy_group,
+            self.scene.enemy_group,
             old_rect,
             self.rect,
             self.right,
@@ -70,7 +70,7 @@ class Enemy(Entity):
 
         # Collision avec le joueur
         self.rect = check_collision(
-            self.world.player_group,
+            self.scene.player_group,
             old_rect,
             self.rect,
             self.right,
@@ -109,9 +109,9 @@ class Enemy(Entity):
         self.velocity *= block.friction
         # if abs(self.velocity.y) > 10: #particules de chute
         #    for i in range(10):
-        #        Blood(self.world, self.rect.x + random.randint(0, self.rect.width),
+        #        Blood(self.scene, self.rect.x + random.randint(0, self.rect.width),
         #              self.rect.y + random.randint(0, self.rect.height),
-        #              Vector(self.velocity.x, self.velocity.y), self.world.particle_group)
+        #              Vector(self.velocity.x, self.velocity.y), self.scene.particle_group)
 
     def receive_damage(self, damage, entity):
         """
@@ -120,12 +120,12 @@ class Enemy(Entity):
         self.velocity = self.velocity + entity.velocity * (entity.mass / self.mass)
         for i in range(20):
             Blood(
-                self.world,
+                self.scene,
                 self.rect.x + random.randint(0, self.rect.width),
                 self.rect.y + random.randint(0, self.rect.height),
                 Vector(entity.velocity.x, entity.velocity.y),
                 5000,
-                self.world.particle_group,
+                self.scene.particle_group,
             )
         super(Enemy, self).receive_damage(damage)
 
@@ -141,4 +141,4 @@ class Enemy(Entity):
         Méthode appelée lorsque l'ennemi meurt.
         """
         super().die()
-        self.world.level.on_enemy_death()
+        self.scene.on_enemy_death()

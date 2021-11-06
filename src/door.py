@@ -12,22 +12,22 @@ class Door(EventBox):
     - groups: tuple groupe auquel de la porte appartient
     """
 
-    def __init__(self, world, x, y, width, height, groups):
-        self.world = world
-        super().__init__(x, y, width, height, (self.world.player_group, self.world.enemy_group), groups)
+    def __init__(self, scene, x, y, width, height, groups):
+        self.scene = scene
+        super().__init__(x, y, width, height, (self.scene.player_group, self.scene.enemy_group), groups)
         self.locked = False
         self.set_locked(True)
 
     def on_collision(self, entity):
         """
         Est appelé lorsque un joueur est entré en collision avec la porte
-        
+
         Propriétés:
         - entity: entité qui est entré en colision
         """
         super().on_collision(entity)
         if self.locked == False:
-            self.world.level.player_access_door()
+            self.scene.next_level()
             self.set_locked(True)
 
     def set_locked(self, state: bool):
