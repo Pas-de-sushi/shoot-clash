@@ -6,23 +6,29 @@ from utils.vector import Vector
 
 class Bullet(DynamicObject):
     """
-    Classe qui represente les projectiles
+    Classe représentant une balle (projectile).
+
+    Paramètres:
+        world: le monde dans lequel la balle est créée
+        x: la position en x de la balle
+        y: la position en y de la balle
+        velocity: la vitesse de la balle
+        groups: les groupes de sprites dans lesquels la balle doit apparaître
+    
+
     """
 
-    def __init__(self, world, x, y, velocity: Vector, groups: tuple) -> None:
+    def __init__(self, world, x, y, velocity: Vector, groups) -> None:
         self.image = pygame.Surface([10, 10])
         self.image.fill((0, 0, 250))
         super().__init__(world, x, y, 0.01, groups)
 
         self.velocity = velocity
 
-    def update(self):
-        super().update()
-
     def handle_collision(self, old_rect) -> pygame.rect:
         """
-        Detruit la balle apres colision
-        Donne vitesse a l'ennemi
+        Gestion des collisions entre la balle et les autres objets du monde.
+        Détruit la balle si elle touche un autre objet.
         """
 
         for entity in pygame.sprite.spritecollide(self, self.world.enemy_group, False):

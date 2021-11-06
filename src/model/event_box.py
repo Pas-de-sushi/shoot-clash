@@ -5,14 +5,18 @@ from block import Block
 
 class EventBox(Block):
     """
-    Boite evenement declanche evenement lors de collision
-    watch_groups: groupes surveillés pour les evenements
-    groups: tuple groupe auquel la boite appartient
+    Bloc de gestion des collisions.
+
+    Paramètres:
+        - x, y: coordonnées du sprite
+        - width, height: dimensions du sprite
+        - watch_groups: liste des groupes à surveiller
+        - groups: liste des groupes dans lesquels le sprite est ajouté
+
     """
 
     def __init__(self, x, y, width, height, watch_groups, groups):
         super().__init__(x, y, width, height, (150, 150, 0), groups, 1)
-
         self.watch_groups = watch_groups
 
     def update(self):
@@ -21,7 +25,8 @@ class EventBox(Block):
 
     def check_collisions(self):
         """
-        Declanche on_collision quand un sprite present dans les groupes watch_groups rentre en collision
+        Déclanche la métode on_collision si un sprite present dans les groupes watch_groups rentre en collision
+        avec le sprite.
         """
         for groups in self.watch_groups:
             collided_sprites = pygame.sprite.spritecollide(self, groups, False)
@@ -30,9 +35,10 @@ class EventBox(Block):
 
     def on_collision(self, entity):
         """
-        Est declanché quand un sprite present dans les groupes watch_groups rentre en collision
-        Propriétés:
-        - entity: objet qui est en collision
-        """
+        Méthode déclenchée lorsqu'une collision est détectée.
+        Doit être implémentée par les classes filles.
 
+        Paramètres:
+            - entity: entité sur laquelle la collision a été détectée
+        """
         pass
