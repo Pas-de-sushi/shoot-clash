@@ -4,7 +4,7 @@ from constants import *
 from bullet import Bullet
 from enemy import Enemy
 from model.entity import Entity
-from utils.map_collision import check_map_collision
+from utils.collision import check_collision
 from utils.vector import Vector
 
 
@@ -114,7 +114,7 @@ class Player(Entity):
         Gestion des collisions entre le joueur et les blocs.
         """
         # Collision avec les blocs
-        self.rect = check_map_collision(
+        self.rect = check_collision(
             self.world.map_group,
             old_rect,
             self.rect,
@@ -125,7 +125,7 @@ class Player(Entity):
         )
 
         # Collision avec les ennemis
-        self.rect = check_map_collision(
+        self.rect = check_collision(
             self.world.enemy_group,
             old_rect,
             self.rect,
