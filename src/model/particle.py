@@ -20,7 +20,7 @@ class Particle(DynamicObject):
     """
 
     def __init__(
-            self, world, x: int, y: int, mass, velocity: Vector, lifetime, groups: tuple
+            self, world, x: int, y: int, mass, velocity: Vector, lifetime, groups
     ) -> None:
         """
         Constructeur de la classe Particle.

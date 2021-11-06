@@ -20,7 +20,7 @@ class Entity(DynamicObject):
         - health : la vie actuelle de l'entitée
     """
 
-    def __init__(self, world, x, y, mass: int, max_health: int, groups: tuple) -> None:
+    def __init__(self, world, x, y, mass: int, max_health: int, groups) -> None:
         super().__init__(world, x, y, mass, groups)  # Appel du constructeur de la classe parente
 
         self.direction = True  # True : l'entitée se dirige vers la droite False gauche
@@ -33,7 +33,7 @@ class Entity(DynamicObject):
         Limite la vélocité à 10.
         """
         super(Entity, self).move(vector)
-        
+
         # Limite la vélocité à 10
         if vector.x > 10:
             vector.x = 10

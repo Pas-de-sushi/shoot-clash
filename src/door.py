@@ -12,7 +12,7 @@ class Door(EventBox):
     - groups: tuple groupe auquel de la porte appartient
     """
 
-    def __init__(self, world, x, y, width, height, groups: tuple):
+    def __init__(self, world, x, y, width, height, groups):
         self.world = world
         super().__init__(x, y, width, height, (self.world.player_group, self.world.enemy_group), groups)
         self.locked = False
