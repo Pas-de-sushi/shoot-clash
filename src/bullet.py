@@ -18,12 +18,13 @@ class Bullet(DynamicObject):
 
     """
 
-    def __init__(self, world, x, y, velocity: Vector, groups) -> None:
+    def __init__(self, world, x, y, velocity: Vector, groups, damage) -> None:
         self.image = pygame.Surface([10, 10])
         self.image.fill((0, 0, 250))
         super().__init__(world, x, y, 0.01, groups)
 
         self.velocity = velocity
+        self.damage = damage
 
     def handle_collision(self, old_rect) -> pygame.rect:
         """
@@ -33,7 +34,7 @@ class Bullet(DynamicObject):
 
         for entity in pygame.sprite.spritecollide(self, self.world.enemy_group, False):
             # entity.kill()
-            entity.receive_damage(10, self)
+            entity.receive_damage(self.damage, self)
             # entity.velocity = entity.velocity + self.velocity * (self.mass / entity.mass)
             self.kill()
         if pygame.sprite.spritecollideany(self, self.world.map_group):
@@ -49,12 +50,20 @@ class Bullet(DynamicObject):
 class Weapon:
     """
     Armes
+
+    Attributs :
+        cadence : cadence de tir de l'arme (100 = 1 ball/sec)
+        recoil : recul produit par l'arme sur l'utilisateur
+        damage : dégats de l'arme
+        velocity :
+
+    Méthodes :
+        shoot() : permet à l'arme de tirer --> méthode appelée par la méthode shoot() de Player
     """
-    def __init__(self, cadence, recoil, damage, reload_time, velocity=Vector(22,0)) -> None:
+    def __init__(self, cadence, recoil, damage, velocity=Vector(22,0)) -> None:
         self.cadence = cadence
         self.recoil = recoil
         self.damage = damage
-        self.reload_time = reload_time
         self.velocity = velocity
 
     def shoot(self, world, entity_rect_x, entity_rect_y,
@@ -64,5 +73,6 @@ class Weapon:
             entity_rect_x,
             entity_rect_y,
             Vector(self.velocity.x if entity_direction == "right" else -self.velocity.x, 0),
-            group
+            group,
+            self.damage
         )

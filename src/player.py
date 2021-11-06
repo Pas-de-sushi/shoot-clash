@@ -61,7 +61,7 @@ class Player(Entity):
                 self.jump_count += 1
 
         # Tir
-        if self.last_shoot >= SHOOT_DELAY:
+        if self.last_shoot >= self.weapon.cadence:
             if pressed_keys[pygame.K_SPACE]:
                 self.shoot()
                 self.last_shoot = 0

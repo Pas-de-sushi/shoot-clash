@@ -76,7 +76,8 @@ class Level:
             (self.world.event_box_group, self.world.door_group)
         )
 
-        w1 = Weapon(cadence=10, recoil=1, damage=20, reload_time=1)
+        w1 = Weapon(cadence=1500, recoil=3, damage=100)
+        w2 = Weapon(500, 0.5, 12)
         Player(self.world, 10, 10, 1, self.world.player_group, weapon=w1)
 
         self.spawn_enemys()
