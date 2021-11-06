@@ -13,7 +13,7 @@ class Block(pygame.sprite.Sprite):
     """
 
     def __init__(
-            self, x, y, width, height, color, groups: tuple, friction=0.7,
+            self, x, y, width, height, color, groups, friction=0.7,
     ):
         super().__init__(groups)
 
