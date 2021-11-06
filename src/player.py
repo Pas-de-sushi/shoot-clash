@@ -80,13 +80,15 @@ class Player(Entity):
             self.world,
             self.rect.x,
             self.rect.y,
-            self.velocity.x,
             self.direction,
             (self.world.bullet_group),
         )
 
         # Recul de l'arme
-        self.velocity.x += (self.weapon.recoil * (-3 if self.direction else 3)) / self.mass
+        if self.direction == "left":
+            self.velocity.x += (self.weapon.recoil * 3) / self.mass
+        else:
+            self.velocity.x += (self.weapon.recoil * -3) / self.mass
 
     def show_health(self):
         """

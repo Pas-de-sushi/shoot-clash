@@ -49,7 +49,7 @@ class Bullet(DynamicObject):
 
 class Weapon:
     """
-    Armes
+    Arme du joueur.
 
     Attributs :
         cadence : cadence de tir de l'arme --> 0 = forte cadence et --> 10000+ = faible cadence
@@ -66,9 +66,19 @@ class Weapon:
         self.damage = damage
         self.velocity = velocity
 
-    def shoot(self, world, entity_rect_x, entity_rect_y,
-        entity_velocity_x, entity_direction, group):
-        bullet = Bullet(
+    def shoot(self, world, entity_rect_x, entity_rect_y, entity_direction, group):
+        """
+        Tire avec l'arme.
+
+        Paramètres:
+            world: le monde dans lequel la balle est créée
+            entity_rect_x: la position en x de l'entité qui tire
+            entity_rect_y: la position en y de l'entité qui tire
+            entity_direction: la direction de l'entité qui tire
+            group: les groupes de sprites dans lesquels la balle doit apparaître
+        """
+
+        Bullet(
             world,
             entity_rect_x,
             entity_rect_y,
