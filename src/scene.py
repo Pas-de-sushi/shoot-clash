@@ -2,7 +2,6 @@ from block import Block
 from constants import *
 from door import Door
 from enemy import Enemy
-from player import Player
 from bullet import *
 
 class Scene:
@@ -23,6 +22,7 @@ class Scene:
 
     def __init__(self, screen) -> None:
         self.screen = screen
+        self.elapsed = 0
         self.is_finished = False
         self.next_scene = None
 
@@ -44,7 +44,7 @@ class Level(Scene):
     Scène représentant un niveau.
 
     Propriétés:
-        enemy_list (list): liste des ennemis qui doivent apparaitre.
+        enemy_list (list EnemySpawner): liste des ennemis qui doivent apparaitre.
         enemy_max (int): nombre d'ennemis maximum simultanés.
 
         enemy_group (pygame.sprite.Group): groupe d'ennemis.
@@ -64,7 +64,7 @@ class Level(Scene):
         super().__init__(screen)
 
         self.enemy_max = 5  # Nombre maximal d'ennemis simultanés
-        self.enemy_list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  # Liste des ennemis à faire apparaitre
+        self.enemy_list = self.get_enemy_list()  # Liste des ennemis à faire apparaitre
 
         # Groupes de sprites
         self.enemy_group = pygame.sprite.Group()  # Groupes d'ennemis
@@ -76,69 +76,32 @@ class Level(Scene):
         self.door_group = pygame.sprite.Group()  # Ouverture des portes
 
         self.load_level()
+        self.on_enemy_death()  # Déclanche l'apparition initiale des ennemis
 
     def load_level(self) -> None:
         """
-        Initialisation du niveau.
+        Initialisation du niveau (création des blocs, personnage, ennemis, etc.).
 
-        - Création des blocs
-        - Création du personnage
-        - Création des ennemis
+        Doit être implémenté dans les classes filles.
         """
-        Block(
-            0,
-            0,
-            SCREEN_WIDTH,
-            10,
-            (255, 255, 255),
-            self.map_group,
-        )
-        Block(
-            0,
-            SCREEN_HEIGHT - 10,
-            SCREEN_WIDTH,
-            10,
-            (255, 255, 255),
-            self.map_group,
-        )
-        Block(
-            0,
-            10,
-            10,
-            SCREEN_HEIGHT - 10,
-            (255, 255, 255),
-            self.map_group,
-        )
-        Block(
-            SCREEN_WIDTH - 100,
-            10,
-            100,
-            SCREEN_HEIGHT - 10,
-            (255, 255, 255),
-            self.map_group,
-        )
-        Block(
-            0,
-            SCREEN_HEIGHT - 200,
-            SCREEN_WIDTH - 300,
-            10,
-            (255, 255, 255),
-            self.map_group,
-        )
-        Door(
-            self,
-            30,
-            SCREEN_HEIGHT - 60,
-            50,
-            50,
-            (self.event_box_group, self.door_group)
-        )
+        pass
 
-        w1 = Weapon(cadence=1500, recoil=3, damage=100)
-        w2 = Weapon(400, 0.5, 12)
-        Player(self, 10, 10, 1, self.player_group, weapon=w1)
+    def get_enemy_list(self):
+        """
+        Retourne la liste des ennemis qui doivent apparaitre (EnemySpawner).
+        Les ennemis doivent être dans un groupe unique pour chaque.
 
-        self.on_enemy_death()  # Déclanche l'apparition initiale des ennemis
+        Doit être implémenté dans les classes filles.
+        """
+        pass
+
+    def next_level(self):
+        """"
+        Passe au niveau suivant. Définir la scène suivante.
+
+        Doit être implémenté dans les classes filles.
+        """
+        pass
 
     def draw(self) -> None:
         self.screen.fill((0, 0, 0))  # On remplit l'écran de noir
@@ -180,10 +143,10 @@ class Level(Scene):
         enemy_list_size = len(self.enemy_list)  # Taille de la liste d'ennemis
 
         for i in range(min(missing_enemys, enemy_list_size)):
-            Enemy(self, 10, 50 * (i + 1), 1, 20, self.enemy_group)  # TODO: Faire apparaitre les ennemis en fonction de enemy_list
-            self.enemy_list.pop()
+            enemy = self.enemy_list.pop()
+            enemy.spawn(self.enemy_group)
 
-         # Si il n'y a plus d'ennemis à faire apparaitre, on termine le niveau
+        # Si il n'y a plus d'ennemis à faire apparaitre, on termine le niveau
         if not self.enemy_list and not self.enemy_group:
             self.finish()
 
@@ -191,9 +154,33 @@ class Level(Scene):
         """
         Termine le niveau. La porte est ouverte pour passer au niveau suivant.
         """
-        self.is_finished = True
         for door in self.door_group:
             door.set_locked(False)
 
-    def player_access_door(self):
-        pass  # Niveau terminé
+class EnemySpawner:
+    """
+    Classe représentant un ennemi qui n'est pas encore apparu.
+
+    Paramètres:
+        scene: la scene dans lequel se trouve l'ennemi
+        x: la position en x de l'ennemi
+        y: la position en y de l'ennemi
+        mass: la masse de l'ennemi
+        damages: les dégâts infligés lors d'un attaque
+    """
+
+    def __init__(self, scene, x, y, mass, damages):
+        self.scene = scene
+        self.x = x
+        self.y = y
+        self.mass = mass
+        self.damages = damages
+
+    def spawn(self, groups):
+        """
+        Fait apparaitre l'ennemi dans un groupe de sprites.
+
+        Paramètres:
+            groups: les groupes de sprites dans lesquels l'ennemi doit apparaitre (tuple)
+        """
+        Enemy(self.scene, self.x, self.y, self.mass, self.damages, groups)

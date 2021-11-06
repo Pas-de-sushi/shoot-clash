@@ -27,7 +27,7 @@ class Door(EventBox):
         """
         super().on_collision(entity)
         if self.locked == False:
-            self.scene.level.player_access_door()
+            self.scene.next_level()
             self.set_locked(True)
 
     def set_locked(self, state: bool):
