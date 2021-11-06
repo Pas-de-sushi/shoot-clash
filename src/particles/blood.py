@@ -18,7 +18,7 @@ class Blood(Particle):
     Modifie la vitesse de la particule de manière aléatoire.
     """
 
-    def __init__(self, world, x, y, velocity: Vector, groups: tuple) -> None:
+    def __init__(self, world, x, y, velocity: Vector, groups) -> None:
         # Création de l'image de la particule
         self.image = pygame.Surface([5, 5])
         self.image.fill((200, 0, 0))
@@ -27,4 +27,3 @@ class Blood(Particle):
 
         # Modification de la vitesse de la particule aléatoirement
         self.randomize_direction()
-
