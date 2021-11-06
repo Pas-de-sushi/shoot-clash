@@ -70,7 +70,7 @@ class Player(Entity):
             self.last_shoot += self.scene.elapsed
 
         self.velocity += movement
-        self.last_damage += self.world.elapsed
+        self.last_damage += self.scene.elapsed
         super().update()
 
     def shoot(self):

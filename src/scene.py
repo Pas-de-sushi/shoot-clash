@@ -1,6 +1,4 @@
-from block import Block
 from constants import *
-from door import Door
 from enemy import Enemy
 from bullet import *
 
