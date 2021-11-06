@@ -13,17 +13,18 @@ class Blood(Particle):
         x: la position en x de la particule
         y: la position en y de la particule
         velocity: la vitesse de la particule
+        lifetime: le temps de vie de la particule
         groups: les groupes dans lesquels la particule doit apparaître
 
     Modifie la vitesse de la particule de manière aléatoire.
     """
 
-    def __init__(self, world, x, y, velocity: Vector, groups) -> None:
+    def __init__(self, world, x, y, velocity: Vector, lifetime, groups) -> None:
         # Création de l'image de la particule
         self.image = pygame.Surface([5, 5])
         self.image.fill((200, 0, 0))
 
-        super().__init__(world, x, y, 1, velocity, -1, groups)
+        super().__init__(world, x, y, 1, velocity, lifetime, groups)
 
         # Modification de la vitesse de la particule aléatoirement
         self.randomize_direction()

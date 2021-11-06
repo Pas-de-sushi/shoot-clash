@@ -124,6 +124,7 @@ class Enemy(Entity):
                 self.rect.x + random.randint(0, self.rect.width),
                 self.rect.y + random.randint(0, self.rect.height),
                 Vector(entity.velocity.x, entity.velocity.y),
+                5000,
                 self.world.particle_group,
             )
         super(Enemy, self).receive_damage(damage)
