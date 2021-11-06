@@ -29,6 +29,7 @@ class Player(Entity):
         self.direction = "right"  # Direction du joueur (left/right)
         self.previous_jump = False  # Permet d'éviter un appui long pour le saut
         self.last_shoot = 0  # Temps depuis le dernier tir
+        self.last_damage = 0  # Temps depuis les derrières dommages reçus
 
         self.friction = 0.5
         self.weapon = weapon
@@ -69,6 +70,7 @@ class Player(Entity):
             self.last_shoot += self.world.elapsed
 
         self.velocity += movement
+        self.last_damage += self.world.elapsed
         super().update()
 
     def shoot(self):
@@ -177,5 +179,11 @@ class Player(Entity):
         En cas de collision, le joueur perds de la vie et est repoussé.
         """
         if isinstance(block, Enemy):
-            self.receive_damage(block.damages)
-            self.velocity *= 5
+            if self.last_damage >= DAMAGE_COOLDOWN:
+                self.receive_damage(block.damages)
+                self.last_damage = 0
+
+                # Rebond sur l'ennemi (vélocité max de 15)
+                velocity = self.velocity * 3
+                velocity.limit(15, 15)
+                self.velocity = velocity

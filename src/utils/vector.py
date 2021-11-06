@@ -11,6 +11,23 @@ class Vector:
         self.x = x
         self.y = y
 
+    def limit(self, x: float = None, y: float = None):
+        """
+        Limite le vecteur à un maximum de x et y.
+        Si la limite vaut None, alors la limite n'est pas appliquée.
+        """
+        if x != None:
+            if self.x > x:
+                self.x = x
+            elif self.x < -x:
+                self.x = -x
+
+        if y != None:
+            if self.y > y:
+                self.y = y
+            elif self.y < -y:
+                self.y = -y
+
     def __str__(self) -> str:
         return f"({self.x}, {self.y})"
 

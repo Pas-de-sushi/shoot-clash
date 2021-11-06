@@ -30,15 +30,10 @@ class Entity(DynamicObject):
     def move(self, vector: Vector):
         """
         Déplace l'entité d'un vecteur donné.
-        Limite la vélocité à 10.
+        Limite la vélocité à 8.
         """
+        vector.limit(8, None)
         super(Entity, self).move(vector)
-
-        # Limite la vélocité à 10
-        if vector.x > 8:
-            vector.x = 8
-        if vector.x < -8:
-            vector.x = -8
 
     def receive_damage(self, damage):
         """
