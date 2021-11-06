@@ -7,7 +7,7 @@ class Entity(DynamicObject):
     Classe représentant un objet de jeu "vivant".
 
     Paramètres:
-        world: le monde dans lequel se trouve l'entité
+        scene: la scene dans lequel se trouve l'entité
         x: la position en x de l'entité
         y: la position en y de l'entité
         mass: la masse de l'entité
@@ -20,8 +20,8 @@ class Entity(DynamicObject):
         - health : la vie actuelle de l'entitée
     """
 
-    def __init__(self, world, x, y, mass: int, max_health: int, groups) -> None:
-        super().__init__(world, x, y, mass, groups)  # Appel du constructeur de la classe parente
+    def __init__(self, scene, x, y, mass: int, max_health: int, groups) -> None:
+        super().__init__(scene, x, y, mass, groups)  # Appel du constructeur de la classe parente
 
         self.direction = "right"
         self.max_health = max_health

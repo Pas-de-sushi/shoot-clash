@@ -13,17 +13,17 @@ class Player(Entity):
     Classe qui represente le joueur. Hérite de la classe Entity.
 
     Propriétés:
-    - world: instance de la classe World
+    - scene: instance de la classe scene
     - x, y: position du joueur
     - mass: masse du joueur
     - groups: tuple des groupes d'entités
     """
 
-    def __init__(self, world, x, y, mass, groups, weapon) -> None:
+    def __init__(self, scene, x, y, mass, groups, weapon) -> None:
         self.image = pygame.Surface([10, 15])
         self.image.fill((0, 255, 0))
 
-        super().__init__(world, x, y, mass, PLAYER_MAX_HEALTH, groups)
+        super().__init__(scene, x, y, mass, PLAYER_MAX_HEALTH, groups)
 
         self.jump_count = 0  # Nombre de sauts effectués
         self.direction = "right"  # Direction du joueur (left/right)
@@ -67,7 +67,7 @@ class Player(Entity):
                 self.shoot()
                 self.last_shoot = 0
         else:
-            self.last_shoot += self.world.elapsed
+            self.last_shoot += self.scene.elapsed
 
         self.velocity += movement
         self.last_damage += self.world.elapsed
@@ -79,11 +79,11 @@ class Player(Entity):
         """
 
         self.weapon.shoot(
-            self.world,
+            self.scene,
             self.rect.x,
             self.rect.y,
             self.direction,
-            (self.world.bullet_group),
+            (self.scene.bullet_group),
         )
 
         # Recul de l'arme
@@ -108,7 +108,7 @@ class Player(Entity):
         color = (255 - health_percent * 255, health_percent * 255, 0)
 
         pygame.draw.rect(
-            self.world.screen,
+            self.scene.screen,
             color,
             (x - 20, self.rect.y - 15, width, 3),
         )
@@ -119,7 +119,7 @@ class Player(Entity):
         """
         # Collision avec les blocs
         self.rect = check_collision(
-            self.world.map_group,
+            self.scene.map_group,
             old_rect,
             self.rect,
             self.right,
@@ -130,7 +130,7 @@ class Player(Entity):
 
         # Collision avec les ennemis
         self.rect = check_collision(
-            self.world.enemy_group,
+            self.scene.enemy_group,
             old_rect,
             self.rect,
             self.right,
