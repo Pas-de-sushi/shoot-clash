@@ -6,6 +6,7 @@ from scenes.level1 import Level1
 pygame.init()
 pygame.display.set_caption("Shoot clash")
 
+pygame.mixer.init()  # Initialise le son
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()  # Horloge du jeu (limite les fps)
 current_scene = Level1(screen)
