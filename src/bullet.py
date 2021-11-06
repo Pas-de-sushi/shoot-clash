@@ -20,7 +20,7 @@ class Bullet(DynamicObject):
 
     def __init__(self, world, x, y, velocity: Vector, groups, damage) -> None:
         self.image = pygame.Surface([10, 10])
-        self.image.fill((0, 0, 250))
+        self.image.fill((250, 250, 0))
         super().__init__(world, x, y, 0.01, groups)
 
         self.velocity = velocity
@@ -52,10 +52,10 @@ class Weapon:
     Armes
 
     Attributs :
-        cadence : cadence de tir de l'arme (100 = 1 ball/sec)
+        cadence : cadence de tir de l'arme --> 0 = forte cadence et --> 10000+ = faible cadence
         recoil : recul produit par l'arme sur l'utilisateur
         damage : dégats de l'arme
-        velocity :
+        velocity : vitesse des balles
 
     Méthodes :
         shoot() : permet à l'arme de tirer --> méthode appelée par la méthode shoot() de Player

@@ -77,7 +77,7 @@ class Level:
         )
 
         w1 = Weapon(cadence=1500, recoil=3, damage=100)
-        w2 = Weapon(500, 0.5, 12)
+        w2 = Weapon(400, 0.5, 12)
         Player(self.world, 10, 10, 1, self.world.player_group, weapon=w1)
 
         self.spawn_enemys()
