@@ -1,6 +1,6 @@
 import pygame
-
 import random
+
 from particles.wall_particle import Wall
 from model.dynamic_object import DynamicObject
 from utils.vector import Vector
@@ -21,7 +21,7 @@ class Bullet(DynamicObject):
     """
 
     def __init__(self, world, x, y, velocity: Vector, groups, damage) -> None:
-        self.image = pygame.Surface([10, 10])
+        self.image = pygame.Surface([6, 6])
         self.image.fill((250, 250, 0))
         super().__init__(world, x, y, 0.01, groups)
 
@@ -39,14 +39,22 @@ class Bullet(DynamicObject):
             entity.receive_damage(self.damage, self)
             # entity.velocity = entity.velocity + self.velocity * (self.mass / entity.mass)
             self.kill()
+
+        collided_wall = pygame.sprite.spritecollideany(self, self.world.map_group)
+        if collided_wall is not None:
+            if self.velocity.x > 0:
+                corrected_x = collided_wall.rect.x - 2 # Taille particule de 2
+            else:
+                corrected_x = collided_wall.rect.x + collided_wall.rect.width
+
         if pygame.sprite.spritecollideany(self, self.world.map_group):
-            for i in range(13):
+            for i in range(4):
                 Wall(
                     self.world,
-                    old_rect.x + random.randint(0, self.rect.width),
-                    old_rect.y + random.randint(0, self.rect.height),
-                    Vector(self.velocity.x // 7 * (-1), self.velocity.y // 6 * (-1)),
-                    300, # 1000 = 1 sec
+                    corrected_x,
+                    self.rect.y + random.randint(0, self.rect.height),
+                    Vector(self.velocity.x / 7 * (-1), self.velocity.y / 7 * (-1)),
+                    1500, # 1000 = 1 sec
                     self.world.particle_group,
             )
             self.kill()

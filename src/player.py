@@ -1,6 +1,8 @@
 import pygame
+import random
 
 from constants import *
+from particles.cartridge_particle import Cartridge
 from bullet import Bullet, Weapon
 from enemy import Enemy
 from model.entity import Entity
@@ -83,6 +85,16 @@ class Player(Entity):
             self.direction,
             (self.world.bullet_group),
         )
+
+        # Cartouches
+        Cartridge(
+                self.world,
+                self.rect.x,
+                self.rect.y,
+                Vector(3 if self.direction == "left" else -3, 3),
+                2000,
+                self.world.particle_group,
+            )
 
         # Recul de l'arme
         if self.direction == "left":
