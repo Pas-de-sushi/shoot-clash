@@ -4,6 +4,7 @@ from scenes.level1 import Level1
 
 # Initialisation de pygame et de différentes variables
 pygame.init()
+pygame.display.set_caption("Shoot clash")
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()  # Horloge du jeu (limite les fps)
