@@ -74,15 +74,13 @@ class Level1(Level):
             self.map_group,
         )
 
-        # # Porte
-        # Door(
-        #     self,
-        #     30,
-        #     SCREEN_HEIGHT - 60,
-        #     50,
-        #     50,
-        #     (self.event_box_group, self.door_group)
-        # )
+        # Porte
+        Door(
+            self,
+            856,
+            96,
+            (self.event_box_group, self.door_group)
+        )
 
         w1 = Weapon(cadence=1500, recoil=3, damage=100)
         Player(self, 140, 470, 1, self.player_group, weapon=w1)
@@ -105,4 +103,4 @@ class Level1(Level):
 
     def next_level(self):
         self.is_finished = True
-        self.next_scene = None
+        self.next_scene = self
