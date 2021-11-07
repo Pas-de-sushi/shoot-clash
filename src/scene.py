@@ -137,6 +137,9 @@ class Level(Scene):
         self.player_group.update()
         self.event_box_group.update()
 
+        # Supression des éléments qui sont hors de l'écran
+        self.remove_outbound_items()
+
     def on_enemy_death(self):
         """
         Fonctionne appelée lorsqu'un ennemi est tué.
@@ -163,6 +166,23 @@ class Level(Scene):
         """
         for door in self.door_group:
             door.set_locked(False)
+
+    def remove_outbound_items(self):
+        """
+        Supprime les particules et les ennemis qui sortent de l'écran.
+        """
+
+        # Suppression des particules
+        for particle in self.particle_group:
+            if particle.rect.x < -particle.rect.width or particle.rect.x > self.screen.get_width() or \
+                    particle.rect.y < -particle.rect.height or particle.rect.y > self.screen.get_height():
+                self.particle_group.remove(particle)
+
+        # Supression des ennemis
+        for enemy in self.enemy_group:
+            if enemy.rect.x < -enemy.rect.width or enemy.rect.x > self.screen.get_width() or \
+                    enemy.rect.y < -enemy.rect.height or enemy.rect.y > self.screen.get_height():
+                enemy.die()
 
 class EnemySpawner:
     """
