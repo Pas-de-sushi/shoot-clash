@@ -7,19 +7,17 @@ class Block(pygame.sprite.Sprite):
 
     Propriétés:
     - x, y: position du bloc
-    - width, height: taille du bloc
+    - image: image du bloc
     - color: couleur du bloc
     - friction: coeficient de friction (multiplication de la vitesse du joueur)
     """
 
     def __init__(
-            self, x, y, width, height, color, groups, friction=0.7,
+            self, x, y, image, groups, friction=0.7,
     ):
         super().__init__(groups)
 
-        self.image = pygame.Surface([width, height])
-        self.image.fill(color)
-
+        self.image = pygame.image.load(image).convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.move_ip(x, y)
 

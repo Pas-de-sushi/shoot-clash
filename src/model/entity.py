@@ -1,3 +1,5 @@
+import pygame
+
 from model.dynamic_object import DynamicObject
 from utils.vector import Vector
 
@@ -7,38 +9,52 @@ class Entity(DynamicObject):
     Classe représentant un objet de jeu "vivant".
 
     Paramètres:
-        world: le monde dans lequel se trouve l'entité
-        x: la position en x de l'entité
-        y: la position en y de l'entité
+        scene: la scene dans lequel se trouve l'entité
+        x, y: coordonnées de l'entité
+        image: l'image de l'entité (direction droite)
         mass: la masse de l'entité
         max_health: la vie maximum de l'entité
         groups: les groupes dans lesquels se trouve l'entité
 
     Propriétés :
+        - image_right : l'image de l'entité en direction droite
+        - image_left : l'image de l'entité en direction gauche
+        - image: l'image de l'entité actuelle
         - direction : direction de l'entité ("left" ou "right")
         - max_health : la vie maximum de l'entitée
         - health : la vie actuelle de l'entitée
     """
 
-    def __init__(self, world, x, y, mass: int, max_health: int, groups) -> None:
-        super().__init__(world, x, y, mass, groups)  # Appel du constructeur de la classe parente
+    def __init__(self, scene, x, y, image, mass: int, max_health: int, groups) -> None:
+        self.image_right = pygame.image.load(image).convert_alpha()
+        self.image_left = pygame.transform.flip(self.image_right, True, False)
+        self.image = self.image_right
+
+        super().__init__(scene, x, y, mass, groups)  # Appel du constructeur de la classe parente
+
 
         self.direction = "right"
         self.max_health = max_health
         self.health = self.max_health
 
+    def type(self):
+        """
+        Retourne le type de l'entité.
+        """
+        return "entity"
+
     def move(self, vector: Vector):
         """
         Déplace l'entité d'un vecteur donné.
-        Limite la vélocité à 10.
+        Limite la vélocité à 8 et mets à jour l'image en fonction de la direction.
         """
-        super(Entity, self).move(vector)
+        if self.direction == "right":
+            self.image = self.image_right
+        else:
+            self.image = self.image_left
 
-        # Limite la vélocité à 10
-        if vector.x > 8:
-            vector.x = 8
-        if vector.x < -8:
-            vector.x = -8
+        vector.limit(8, None)
+        super(Entity, self).move(vector)
 
     def receive_damage(self, damage):
         """
