@@ -20,7 +20,7 @@ class Player(Entity):
     """
 
     def __init__(self, scene, x, y, mass, groups, weapon) -> None:
-        super().__init__(scene, x, y, 48, 72, "assets/player.png", mass, PLAYER_MAX_HEALTH, groups)
+        super().__init__(scene, x, y, "assets/player.png", mass, PLAYER_MAX_HEALTH, groups)
 
         self.jump_count = 0  # Nombre de sauts effectués
         self.direction = "right"  # Direction du joueur (left/right)

@@ -93,13 +93,25 @@ class Level1(Level):
 
         for i in range(10):
             enemy_list.append(
-                EnemySpawner(self, 890, random.randint(80, 100), 1, 20)
+                EnemySpawner(self, random.randint(380, 450), random.randint(80, 200), "assets/enemy/pig.png", 1, 20, 100)
+            )
+            enemy_list.append(
+                EnemySpawner(self, random.randint(380, 450), random.randint(80, 200), "assets/enemy/crab.png", 1, 30, 200)
             )
 
+        for i in range(3):
+            enemy_list.append(
+                EnemySpawner(self, random.randint(380, 450), random.randint(80, 200), "assets/enemy/cucumber.png", 1, 40, 100)
+            )
+            enemy_list.append(
+                EnemySpawner(self, random.randint(380, 450), random.randint(80, 200), "assets/enemy/dude.png", 1, 70, 300)
+            )
+
+        random.shuffle(enemy_list)
         return enemy_list
 
     def get_enemy_max(self):
-        return 5
+        return 3
 
     def next_level(self):
         self.is_finished = True

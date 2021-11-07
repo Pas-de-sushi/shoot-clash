@@ -20,15 +20,16 @@ class Enemy(Entity):
         image: l'image de l'ennemi
         mass: la masse de l'ennemi
         damages: les dégâts infligés lors d'un attaque
+        max_health: la vie maximale de l'ennemi
         groups: les groupes dans lesquels l'ennemi doit être ajouté
     """
 
-    def __init__(self, scene, x, y, mass, damages, groups) -> None:
+    def __init__(self, scene, x, y, image, mass, damages, max_health, groups) -> None:
         self.image = pygame.Surface([20, 20])
         self.image.fill((255, 0, 0))
         self.image.fill((0, 100, 150))
 
-        super(Enemy, self).__init__(scene, x, y, 44, 41, "assets/enemy/pig.png", mass, 100, groups)
+        super(Enemy, self).__init__(scene, x, y, image, mass, max_health, groups)
         self.friction = 0.5
         self.damages = damages
 
@@ -151,7 +152,6 @@ class Enemy(Entity):
         Met à jour la vie de l'ennemi. Sa couleur est modifiée en fonction de sa vie.
         """
         super(Enemy, self).set_health(new_health)
-        self.image.fill((255 - int(255 * self.health / self.max_health), 100, 150))
 
     def die(self):
         """

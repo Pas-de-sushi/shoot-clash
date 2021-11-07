@@ -11,7 +11,6 @@ class Entity(DynamicObject):
     Paramètres:
         scene: la scene dans lequel se trouve l'entité
         x, y: coordonnées de l'entité
-        width, height: dimensions de l'entité
         image: l'image de l'entité (direction droite)
         mass: la masse de l'entité
         max_health: la vie maximum de l'entité
@@ -26,14 +25,10 @@ class Entity(DynamicObject):
         - health : la vie actuelle de l'entitée
     """
 
-    def __init__(self, scene, x, y, width, height, image, mass: int, max_health: int, groups) -> None:
-        # Charge l'image et la redimensionne
-        image = pygame.image.load(image).convert_alpha()
-        image = pygame.transform.scale(image, (width, height))
-
-        self.image_right = image
-        self.image_left = pygame.transform.flip(image, True, False)
-        self.image = image
+    def __init__(self, scene, x, y, image, mass: int, max_health: int, groups) -> None:
+        self.image_right = pygame.image.load(image).convert_alpha()
+        self.image_left = pygame.transform.flip(self.image_right, True, False)
+        self.image = self.image_right
 
         super().__init__(scene, x, y, mass, groups)  # Appel du constructeur de la classe parente
 

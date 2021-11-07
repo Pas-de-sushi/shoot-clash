@@ -200,16 +200,20 @@ class EnemySpawner:
         scene: la scene dans lequel se trouve l'ennemi
         x: la position en x de l'ennemi
         y: la position en y de l'ennemi
+        image: l'image de l'ennemi
         mass: la masse de l'ennemi
         damages: les dégâts infligés lors d'un attaque
+        max_health: la vie maximum de l'ennemi
     """
 
-    def __init__(self, scene, x, y, mass, damages):
+    def __init__(self, scene, x, y, image, mass, damages, max_health):
         self.scene = scene
         self.x = x
         self.y = y
         self.mass = mass
+        self.image = image
         self.damages = damages
+        self.max_health = max_health
 
     def spawn(self, groups):
         """
@@ -218,4 +222,4 @@ class EnemySpawner:
         Paramètres:
             groups: les groupes de sprites dans lesquels l'ennemi doit apparaitre (tuple)
         """
-        Enemy(self.scene, self.x, self.y, self.mass, self.damages, groups)
+        Enemy(self.scene, self.x, self.y, self.image, self.mass, self.damages, self.max_health, groups)
