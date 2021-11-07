@@ -30,9 +30,9 @@ class Enemy(Entity):
         self.friction = 0.5
         self.damages = damages
         self.die_sound = [
-            pygame.mixer.Sound("assets/sounds/death_ennemy/vo_teefault_pain_short-0" + str(i) + ".wav") for i
-            in
-            range(1, 10)]
+            # pygame.mixer.Sound("assets/sounds/death_ennemy/vo_teefault_pain_short-0" + str(i) + ".wav") for i
+            #pygame.mixer.Sound("assets/sounds/pop/sfx_pickup_hrt-0" + str(i) + ".wav") for i in range(1, 3)]
+            pygame.mixer.Sound("assets/sounds/death_enemy/foley_body_splat-0" + str(i) + ".wav") for i in range(1, 5)]
 
     def update(self):
         """

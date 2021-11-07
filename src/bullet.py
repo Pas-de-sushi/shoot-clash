@@ -67,7 +67,9 @@ class Weapon:
         self.recoil = recoil
         self.damage = damage
         self.velocity = velocity
-        self.shoot_sound = pygame.mixer.Sound("assets/sounds/wp_gun_fire-01.wav")
+        # self.shoot_sound = pygame.mixer.Sound("assets/sounds/wp_gun_fire-01.wav")
+        # self.shoot_sound = pygame.mixer.Sound("assets/sounds/pop/sfx_pickup_hrt-01.wav")
+        self.shoot_sound = pygame.mixer.Sound("assets/sounds/pistolet_tontons_flingueurs.wav")
 
     def shoot(self, scene, entity_rect_x, entity_rect_y, entity_direction, group):
         """

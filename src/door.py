@@ -1,4 +1,5 @@
 from model.event_box import EventBox
+import pygame
 
 
 class Door(EventBox):
@@ -14,8 +15,11 @@ class Door(EventBox):
 
     def __init__(self, scene, x, y, width, height, groups):
         self.scene = scene
-        super().__init__(x, y, width, height, (self.scene.player_group, self.scene.enemy_group), groups)
+        super().__init__(x, y, width, height,
+                         (self.scene.player_group, self.scene.enemy_group), groups)
         self.locked = False
+        self.shoot_sound = pygame.mixer.Sound(
+            "assets/sounds/door/door_lock_open_01.wav")
         self.set_locked(True)
 
     def on_collision(self, entity):
@@ -39,3 +43,4 @@ class Door(EventBox):
             self.image.fill((225, 0, 0))
         else:
             self.image.fill((155, 155, 0))
+            self.shoot_sound.play()

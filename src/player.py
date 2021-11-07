@@ -36,6 +36,10 @@ class Player(Entity):
         self.friction = 0.5
         self.weapon = weapon
 
+        self.pain_sound = [
+            pygame.mixer.Sound("assets/sounds/player_pain/vo_teefault_pain_short-0" + str(i) + ".wav") for i in
+            range(1, 10)]
+
         self.steps_left_sound = [pygame.mixer.Sound("assets/sounds/steps/foley_foot_left-0" + str(i) + ".wav") for i in
                                  range(1, 4)]
         self.steps_right_sound = [pygame.mixer.Sound("assets/sounds/steps/foley_foot_right-0" + str(i) + ".wav") for i
@@ -209,3 +213,13 @@ class Player(Entity):
                 velocity = self.velocity * 3
                 velocity.limit(15, 15)
                 self.velocity = velocity
+
+    def receive_damage(self, damage):
+        """
+        Méthode appelée lorsqu'une entité est attaquée.
+        Joue un son
+        Paramètres:
+            damage : le nombre de dégâts reçus
+        """
+        random.choice(self.pain_sound).play()
+        super().receive_damage(damage)
