@@ -30,6 +30,9 @@ class Enemy(Entity):
         self.friction = 0.5
         self.damages = damages
 
+    def type(self):
+        return "enemy"
+
     def update(self):
         """
         Déplacement automatique de l'ennemi.
@@ -86,6 +89,7 @@ class Enemy(Entity):
         self.velocity.x *= -1
         self.velocity *= block.friction
         self.direction = "left"
+        self.player_collision(block)
 
     def left(self, block):
         """
@@ -94,12 +98,14 @@ class Enemy(Entity):
         self.velocity.x *= -1
         self.velocity *= block.friction
         self.direction = "right"
+        self.player_collision(block)
 
     def top(self, block):
         """
         Collision avec un bloc en haut.
         """
         self.velocity.y = 0
+        self.player_collision(block)
 
     def bottom(self, block):
         """
@@ -107,11 +113,20 @@ class Enemy(Entity):
         """
         self.velocity.y *= -0.25
         self.velocity *= block.friction
+        self.player_collision(block)
         # if abs(self.velocity.y) > 10: #particules de chute
         #    for i in range(10):
         #        Blood(self.scene, self.rect.x + random.randint(0, self.rect.width),
         #              self.rect.y + random.randint(0, self.rect.height),
         #              Vector(self.velocity.x, self.velocity.y), self.scene.particle_group)
+
+    def player_collision(self, block):
+        """
+        Méthode appelée lorsqu'un ennemi touche le joueur.
+        """
+        if isinstance(block, Entity) and block.type() == "player":
+            block.receive_damage(self.damages)
+
 
     def receive_damage(self, damage, entity):
         """
