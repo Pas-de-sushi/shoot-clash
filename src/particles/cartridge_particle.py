@@ -3,6 +3,8 @@ import pygame
 from model.particle import Particle
 from utils.vector import Vector
 
+from utils.collision import check_collision
+
 
 class Cartridge(Particle):
     """
@@ -28,16 +30,16 @@ class Cartridge(Particle):
 
         self.velocity.y = -6
 
-        def handle_collision(self, old_rect):
-            self.rect = check_collision(
-                self.world.map_group,
-                old_rect,
-                self.rect,
-                self.right,
-                self.left,
-                self.top,
-                self.bottom
-            )
+    def handle_collision(self, old_rect):
+        self.rect = check_collision(
+            self.world.map_group,
+            old_rect,
+            self.rect,
+            self.right,
+            self.left,
+            self.top,
+            self.bottom
+        )
 
     def right(self, block):
         self.velocity.x *= -1
