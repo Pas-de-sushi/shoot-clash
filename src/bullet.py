@@ -33,9 +33,7 @@ class Bullet(DynamicObject):
         """
 
         for entity in pygame.sprite.spritecollide(self, self.scene.enemy_group, False):
-            # entity.kill()
             entity.receive_damage(self.damage, self)
-            # entity.velocity = entity.velocity + self.velocity * (self.mass / entity.mass)
             self.kill()
         if pygame.sprite.spritecollideany(self, self.scene.map_group):
             # for i in range(10):
