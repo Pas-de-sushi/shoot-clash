@@ -29,13 +29,17 @@ class Enemy(Entity):
         self.image.fill((255, 0, 0))
         self.image.fill((0, 100, 150))
 
-        super(Enemy, self).__init__(scene, x, y, image, mass, max_health, groups)
+        super(Enemy, self).__init__(
+            scene, x, y, image, mass, max_health, groups)
         self.friction = 0.5
         self.damages = damages
         self.die_sound = [
             # pygame.mixer.Sound("assets/sounds/death_ennemy/vo_teefault_pain_short-0" + str(i) + ".wav") for i
-            #pygame.mixer.Sound("assets/sounds/pop/sfx_pickup_hrt-0" + str(i) + ".wav") for i in range(1, 3)]
+            # pygame.mixer.Sound("assets/sounds/pop/sfx_pickup_hrt-0" + str(i) + ".wav") for i in range(1, 3)]
             pygame.mixer.Sound("assets/sounds/death_enemy/foley_body_splat-0" + str(i) + ".wav") for i in range(1, 5)]
+
+        self.pain_sound = [
+            pygame.mixer.Sound("assets/sounds/pain_enemy/foley_body_impact-0" + str(i) + ".wav") for i in range(1, 4)]
 
     def type(self):
         return "enemy"
@@ -134,12 +138,12 @@ class Enemy(Entity):
         if isinstance(block, Entity) and block.type() == "player":
             block.receive_damage(self.damages)
 
-
     def receive_damage(self, damage, entity):
         """
         Méthode appelée lorsqu'un ennemi est attaqué.
         """
-        self.velocity = self.velocity + entity.velocity * (entity.mass / self.mass)
+        self.velocity = self.velocity + \
+            entity.velocity * (entity.mass / self.mass)
         for i in range(20):
             Blood(
                 self.scene,
@@ -149,7 +153,8 @@ class Enemy(Entity):
                 5000,
                 self.scene.particle_group,
             )
-        super(Enemy, self).receive_damage(damage)
+        # random.choice(self.pain_sound).play()
+        super().receive_damage(damage)
 
     def set_health(self, new_health):
         """
