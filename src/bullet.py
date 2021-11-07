@@ -1,5 +1,7 @@
 import pygame
+import random
 
+from particles.wall_particle import Wall
 from model.dynamic_object import DynamicObject
 from utils.vector import Vector
 
@@ -33,18 +35,28 @@ class Bullet(DynamicObject):
         """
 
         for entity in pygame.sprite.spritecollide(self, self.scene.enemy_group, False):
-            # entity.kill()
             entity.receive_damage(self.damage, self)
-            # entity.velocity = entity.velocity + self.velocity * (self.mass / entity.mass)
             self.kill()
+
+        collided_wall = pygame.sprite.spritecollideany(
+            self, self.scene.map_group)
+        if collided_wall is not None:
+            if self.velocity.x > 0:
+                corrected_x = collided_wall.rect.x - 2  # Taille particule de 2
+            else:
+                corrected_x = collided_wall.rect.x + collided_wall.rect.width
+
         if pygame.sprite.spritecollideany(self, self.scene.map_group):
-            # for i in range(10):
-            #    Blood(self.scene, self.rect.x + random.randint(0, self.rect.width),
-            #          self.rect.y + random.randint(0, self.rect.height),
-            #          Vector(self.velocity.x * (-1), self.velocity.y * (-1)), self.scene.particle_group)
-            # Blood(self.scene, self.rect.x + random.randint(0, self.rect.width),
-            #      self.rect.y + random.randint(0, self.rect.height), Vector(self.velocity.x * 0.1, 0),
-            #      self.scene.particle_group)
+            for i in range(4):
+                Wall(
+                    self.scene,
+                    corrected_x,
+                    self.rect.y + random.randint(0, self.rect.height),
+                    Vector(self.velocity.x / 7 * (-1),
+                           self.velocity.y / 7 * (-1)),
+                    1500,  # 1000 = 1 sec
+                    self.scene.particle_group,
+                )
             self.kill()
 
 
@@ -87,7 +99,8 @@ class Weapon:
             scene,
             entity_rect_x,
             entity_rect_y,
-            Vector(self.velocity.x if entity_direction == "right" else -self.velocity.x, 0),
+            Vector(self.velocity.x if entity_direction ==
+                   "right" else -self.velocity.x, 0),
             group,
             self.damage
         )

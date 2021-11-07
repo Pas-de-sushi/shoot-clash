@@ -1,8 +1,11 @@
 import random
 
 import pygame
+import random
 
 from constants import *
+from particles.cartridge_particle import Cartridge
+from bullet import Bullet, Weapon
 from enemy import Enemy
 from model.entity import Entity
 from utils.collision import check_collision
@@ -14,18 +17,17 @@ class Player(Entity):
     """
     Classe qui represente le joueur. Hérite de la classe Entity.
 
-    Propriétés:
+    Paramètres:
     - scene: instance de la classe scene
     - x, y: position du joueur
     - mass: masse du joueur
     - groups: tuple des groupes d'entités
+
+    Propriétés:
     """
 
     def __init__(self, scene, x, y, mass, groups, weapon) -> None:
-        self.image = pygame.Surface([10, 15])
-        self.image.fill((0, 255, 0))
-
-        super().__init__(scene, x, y, mass, PLAYER_MAX_HEALTH, groups)
+        super().__init__(scene, x, y, "assets/player.png", mass, PLAYER_MAX_HEALTH, groups)
 
         self.jump_count = 0  # Nombre de sauts effectués
         self.direction = "right"  # Direction du joueur (left/right)
@@ -48,6 +50,9 @@ class Player(Entity):
         self.step_sound_timer = 0
 
         self.is_on_floor = False
+
+    def type(self):
+        return "player"
 
     def update(self):
         """
@@ -105,10 +110,22 @@ class Player(Entity):
 
         self.weapon.shoot(
             self.scene,
-            self.rect.x,
-            self.rect.y,
+            self.rect.x - self.image.get_width() / 2,
+            self.rect.y + self.image.get_height() / 2,
             self.direction,
             (self.scene.bullet_group),
+        )
+
+        # Cartouches
+        Cartridge(
+            self.scene,
+            self.rect.x,
+            self.rect.y,
+            Vector(random.randint(1, 4) if self.direction == "left" else
+                   random.randint(-4, -1),
+                   random.randint(2, 5)),
+            2000,
+            self.scene.particle_group,
         )
 
         # Recul de l'arme
@@ -138,6 +155,14 @@ class Player(Entity):
             (x - 20, self.rect.y - 15, width, 3),
         )
 
+    def receive_damage(self, damage):
+        """
+        Gestion des dommages reçus.
+        """
+        if self.last_damage >= DAMAGE_COOLDOWN:
+            super().receive_damage(damage)
+            self.last_damage = 0
+
     def handle_collision(self, old_rect):
         """
         Gestion des collisions entre le joueur et les blocs.
@@ -163,6 +188,21 @@ class Player(Entity):
             self.top,
             self.bottom,
         )
+
+    def enemy_collision(self, block):
+        """
+        Collision avec un ennemi (rebond et dommages).
+        *
+        Vélocité maximale de 15.
+        """
+        if isinstance(block, Entity) and block.type() == "enemy":
+            # Les dommages sont gérés à la fois au niveau de l'ennemi et au niveau du joueur
+            # en fonction de quelle entité avance.
+            self.receive_damage(block.damages)
+
+            velocity = self.velocity * 3
+            velocity.limit(15, 15)
+            self.velocity = velocity
 
     def right(self, block):
         """

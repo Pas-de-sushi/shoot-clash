@@ -110,8 +110,16 @@ class Level(Scene):
         """
         pass
 
+    def draw_background(self):
+        """
+        Dessine le fond du niveau.
+
+        Peut être modifié dans les classes filles.
+        """
+        self.screen.fill((50, 52, 67))
+
     def draw(self) -> None:
-        self.screen.fill((0, 0, 0))  # On remplit l'écran de noir
+        self.draw_background()
 
         # Affichage des groupes de sprites
         self.map_group.draw(self.screen)
@@ -136,6 +144,9 @@ class Level(Scene):
         self.bullet_group.update()
         self.player_group.update()
         self.event_box_group.update()
+
+        # Supression des éléments qui sont hors de l'écran
+        self.remove_outbound_items()
 
     def on_enemy_death(self):
         """
@@ -164,6 +175,23 @@ class Level(Scene):
         for door in self.door_group:
             door.set_locked(False)
 
+    def remove_outbound_items(self):
+        """
+        Supprime les particules et les ennemis qui sortent de l'écran.
+        """
+
+        # Suppression des particules
+        for particle in self.particle_group:
+            if particle.rect.x < -particle.rect.width or particle.rect.x > self.screen.get_width() or \
+                    particle.rect.y < -particle.rect.height or particle.rect.y > self.screen.get_height():
+                self.particle_group.remove(particle)
+
+        # Supression des ennemis
+        for enemy in self.enemy_group:
+            if enemy.rect.x < -enemy.rect.width or enemy.rect.x > self.screen.get_width() or \
+                    enemy.rect.y < -enemy.rect.height or enemy.rect.y > self.screen.get_height():
+                enemy.die()
+
 class EnemySpawner:
     """
     Classe représentant un ennemi qui n'est pas encore apparu.
@@ -172,16 +200,20 @@ class EnemySpawner:
         scene: la scene dans lequel se trouve l'ennemi
         x: la position en x de l'ennemi
         y: la position en y de l'ennemi
+        image: l'image de l'ennemi
         mass: la masse de l'ennemi
         damages: les dégâts infligés lors d'un attaque
+        max_health: la vie maximum de l'ennemi
     """
 
-    def __init__(self, scene, x, y, mass, damages):
+    def __init__(self, scene, x, y, image, mass, damages, max_health):
         self.scene = scene
         self.x = x
         self.y = y
         self.mass = mass
+        self.image = image
         self.damages = damages
+        self.max_health = max_health
 
     def spawn(self, groups):
         """
@@ -190,4 +222,4 @@ class EnemySpawner:
         Paramètres:
             groups: les groupes de sprites dans lesquels l'ennemi doit apparaitre (tuple)
         """
-        Enemy(self.scene, self.x, self.y, self.mass, self.damages, groups)
+        Enemy(self.scene, self.x, self.y, self.image, self.mass, self.damages, self.max_health, groups)
