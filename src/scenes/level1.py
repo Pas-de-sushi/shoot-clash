@@ -8,6 +8,7 @@ from constants import *
 from door import Door
 from player import Player
 from scene import EnemySpawner, Level
+from scenes.end import GameOver, Victory
 
 
 class Level1(Level):
@@ -115,4 +116,8 @@ class Level1(Level):
 
     def next_level(self):
         self.is_finished = True
-        self.next_scene = self
+        self.next_scene = Victory(self.screen, Level1)
+
+    def game_over(self):
+        self.is_finished = True
+        self.next_scene = GameOver(self.screen, Level1)

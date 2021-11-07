@@ -196,3 +196,11 @@ class Player(Entity):
         self.velocity *= block.friction
         self.jump_count = 0
         self.enemy_collision(block)
+
+    def die(self):
+        """
+        Gestion de la mort du joueur.
+        Affiche la scène game over.
+        """
+        super().die()
+        self.scene.game_over()

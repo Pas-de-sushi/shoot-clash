@@ -110,6 +110,14 @@ class Level(Scene):
         """
         pass
 
+    def game_over(self):
+        """
+        Passe au menu de fin de partie.
+
+        Doit être implémenté dans les classes filles.
+        """
+        pass
+
     def draw_background(self):
         """
         Dessine le fond du niveau.

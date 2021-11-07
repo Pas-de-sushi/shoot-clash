@@ -10,7 +10,7 @@ class Intro(Scene):
 
     def __init__(self, screen) -> None:
         super().__init__(screen)
-        self.background = pygame.image.load("assets/intro.png").convert()
+        self.background = pygame.image.load("assets/scenes/intro.png").convert()
 
     def update(self, elapsed: int) -> None:
         """
