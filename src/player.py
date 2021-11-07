@@ -239,6 +239,14 @@ class Player(Entity):
         self.enemy_collision(block)
         self.is_on_floor = True
 
+    def die(self):
+        """
+        Gestion de la mort du joueur.
+        Affiche la scène game over.
+        """
+        super().die()
+        self.scene.game_over()
+
     def enemy_collision(self, block):
         """
         Gère la collision avec un ennemi.
