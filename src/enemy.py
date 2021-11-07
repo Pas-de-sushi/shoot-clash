@@ -16,23 +16,29 @@ class Enemy(Entity):
         scene: la scene dans lequel se trouve l'ennemi
         x: la position en x de l'ennemi
         y: la position en y de l'ennemi
+        width, height: la taille de l'ennemi
+        image: l'image de l'ennemi
         mass: la masse de l'ennemi
         damages: les dégâts infligés lors d'un attaque
+        max_health: la vie maximale de l'ennemi
         groups: les groupes dans lesquels l'ennemi doit être ajouté
     """
 
-    def __init__(self, scene, x, y, mass, damages, groups) -> None:
+    def __init__(self, scene, x, y, image, mass, damages, max_health, groups) -> None:
         self.image = pygame.Surface([20, 20])
         self.image.fill((255, 0, 0))
         self.image.fill((0, 100, 150))
 
-        super(Enemy, self).__init__(scene, x, y, mass, 100, groups)
+        super(Enemy, self).__init__(scene, x, y, image, mass, max_health, groups)
         self.friction = 0.5
         self.damages = damages
         self.die_sound = [
             # pygame.mixer.Sound("assets/sounds/death_ennemy/vo_teefault_pain_short-0" + str(i) + ".wav") for i
             #pygame.mixer.Sound("assets/sounds/pop/sfx_pickup_hrt-0" + str(i) + ".wav") for i in range(1, 3)]
             pygame.mixer.Sound("assets/sounds/death_enemy/foley_body_splat-0" + str(i) + ".wav") for i in range(1, 5)]
+
+    def type(self):
+        return "enemy"
 
     def update(self):
         """
@@ -90,6 +96,7 @@ class Enemy(Entity):
         self.velocity.x *= -1
         self.velocity *= block.friction
         self.direction = "left"
+        self.player_collision(block)
 
     def left(self, block):
         """
@@ -98,12 +105,14 @@ class Enemy(Entity):
         self.velocity.x *= -1
         self.velocity *= block.friction
         self.direction = "right"
+        self.player_collision(block)
 
     def top(self, block):
         """
         Collision avec un bloc en haut.
         """
         self.velocity.y = 0
+        self.player_collision(block)
 
     def bottom(self, block):
         """
@@ -111,11 +120,20 @@ class Enemy(Entity):
         """
         self.velocity.y *= -0.25
         self.velocity *= block.friction
+        self.player_collision(block)
         # if abs(self.velocity.y) > 10: #particules de chute
         #    for i in range(10):
         #        Blood(self.scene, self.rect.x + random.randint(0, self.rect.width),
         #              self.rect.y + random.randint(0, self.rect.height),
         #              Vector(self.velocity.x, self.velocity.y), self.scene.particle_group)
+
+    def player_collision(self, block):
+        """
+        Méthode appelée lorsqu'un ennemi touche le joueur.
+        """
+        if isinstance(block, Entity) and block.type() == "player":
+            block.receive_damage(self.damages)
+
 
     def receive_damage(self, damage, entity):
         """
@@ -138,7 +156,6 @@ class Enemy(Entity):
         Met à jour la vie de l'ennemi. Sa couleur est modifiée en fonction de sa vie.
         """
         super(Enemy, self).set_health(new_health)
-        self.image.fill((255 - int(255 * self.health / self.max_health), 100, 150))
 
     def die(self):
         """

@@ -32,3 +32,4 @@ while running:
     current_scene.draw()
 
     pygame.display.update()
+  
