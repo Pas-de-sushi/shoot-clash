@@ -23,7 +23,7 @@ class Door(EventBox):
             "assets/door-open.png").convert_alpha()
         self.locked = True
 
-        self.shoot_sound = pygame.mixer.Sound(
+        self.open_sound = pygame.mixer.Sound(
             "assets/sounds/door/door_lock_open_01.wav")
 
         super().__init__(x, y, "assets/door-closed.png",
@@ -45,9 +45,12 @@ class Door(EventBox):
         """
         Definie si la porte est verouillé ou non et actualise la vue
         """
-        self.locked = state
-        if self.locked:
-            self.image = self.image_closed
+        if self.locked == state:
+            return
         else:
-            self.image = self.image_open
-            self.shoot_sound.play()
+            self.locked = state
+            if self.locked:
+                self.image = self.image_closed
+            else:
+                self.image = self.image_open
+                self.open_sound.play()

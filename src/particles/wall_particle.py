@@ -6,7 +6,7 @@ from utils.vector import Vector
 
 class Wall(Particle):
     """
-    Représente un particule de sang.
+    Représente un particule lors du contact d'une balle avec un mur.
 
     Paramètres:
         scene: le monde dans lequel se déroule la simulation
@@ -21,8 +21,8 @@ class Wall(Particle):
 
     def __init__(self, scene, x, y, velocity: Vector, lifetime, groups) -> None:
         # Création de l'image de la particule
-        self.image = pygame.Surface([2, 2])
-        self.image.fill((255, 255, 255))
+        self.image = pygame.Surface([4, 4])
+        self.image.fill((169, 103, 83))
 
         super().__init__(scene, x, y, 1, velocity, lifetime, groups)
 

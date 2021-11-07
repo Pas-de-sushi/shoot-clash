@@ -161,6 +161,7 @@ class Player(Entity):
         """
         if self.last_damage >= DAMAGE_COOLDOWN:
             super().receive_damage(damage)
+            random.choice(self.pain_sound).play()
             self.last_damage = 0
 
     def handle_collision(self, old_rect):
@@ -261,13 +262,3 @@ class Player(Entity):
                 velocity = self.velocity * 3
                 velocity.limit(15, 15)
                 self.velocity = velocity
-
-    def receive_damage(self, damage):
-        """
-        Méthode appelée lorsqu'une entité est attaquée.
-        Joue un son
-        Paramètres:
-            damage : le nombre de dégâts reçus
-        """
-        random.choice(self.pain_sound).play()
-        super().receive_damage(damage)

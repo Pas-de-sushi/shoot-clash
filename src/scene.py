@@ -44,6 +44,7 @@ class Level(Scene):
     Propriétés:
         enemy_list (list EnemySpawner): liste des ennemis qui doivent apparaitre.
         enemy_max (int): nombre d'ennemis maximum simultanés.
+        last_enemy_spawn (int): temps écoulé depuis le dernier ennemi apparu.
 
         enemy_group (pygame.sprite.Group): groupe d'ennemis.
         map_group (pygame.sprite.Group): groupe de blocs.
@@ -64,6 +65,7 @@ class Level(Scene):
 
         self.enemy_max = self.get_enemy_max()  # Nombre maximal d'ennemis simultanés
         self.enemy_list = self.get_enemy_list()  # Liste des ennemis à faire apparaitre
+        self.last_enemy_spawn = ENEMY_SPAWN_DELAY  # Temps écoulé depuis le dernier ennemi apparu
 
         # Groupes de sprites
         self.enemy_group = pygame.sprite.Group()  # Groupes d'ennemis
@@ -75,7 +77,6 @@ class Level(Scene):
         self.door_group = pygame.sprite.Group()  # Ouverture des portes
 
         self.load_level()
-        self.on_enemy_death()  # Déclanche l'apparition initiale des ennemis
 
     def load_level(self) -> None:
         """
@@ -155,12 +156,13 @@ class Level(Scene):
 
         # Supression des éléments qui sont hors de l'écran
         self.remove_outbound_items()
+        # Apparition des ennemis manquants
+        self.last_enemy_spawn += elapsed
+        self.spawn_missing_ennemy()
 
-    def on_enemy_death(self):
+    def spawn_missing_ennemy(self):
         """
-        Fonctionne appelée lorsqu'un ennemi est tué.
-
-        Elle fait apparaitre un nouvel ennemi si il y en a un manquant,
+        Fait apparaitre un nouvel ennemi si il y en a un manquant,
         et termine le niveau si il n'y en a plus.
         """
 
@@ -168,9 +170,10 @@ class Level(Scene):
         missing_enemys = self.enemy_max - len(self.enemy_group)  # Nombre d'ennemis manquants à faire apparaitre
         enemy_list_size = len(self.enemy_list)  # Taille de la liste d'ennemis
 
-        for i in range(min(missing_enemys, enemy_list_size)):
+        if min(missing_enemys, enemy_list_size) > 0 and self.last_enemy_spawn > ENEMY_SPAWN_DELAY:
             enemy = self.enemy_list.pop()
             enemy.spawn(self.enemy_group)
+            self.last_enemy_spawn = 0
 
         # Si il n'y a plus d'ennemis à faire apparaitre, on termine le niveau
         if not self.enemy_list and not self.enemy_group:

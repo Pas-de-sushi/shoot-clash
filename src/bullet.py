@@ -21,7 +21,7 @@ class Bullet(DynamicObject):
     """
 
     def __init__(self, scene, x, y, velocity: Vector, groups, damage) -> None:
-        self.image = pygame.Surface([10, 10])
+        self.image = pygame.Surface([13, 8])
         self.image.fill((250, 250, 0))
         super().__init__(scene, x, y, 0.01, groups)
 

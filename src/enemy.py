@@ -34,8 +34,6 @@ class Enemy(Entity):
         self.friction = 0.5
         self.damages = damages
         self.die_sound = [
-            # pygame.mixer.Sound("assets/sounds/death_ennemy/vo_teefault_pain_short-0" + str(i) + ".wav") for i
-            # pygame.mixer.Sound("assets/sounds/pop/sfx_pickup_hrt-0" + str(i) + ".wav") for i in range(1, 3)]
             pygame.mixer.Sound("assets/sounds/death_enemy/foley_body_splat-0" + str(i) + ".wav") for i in range(1, 5)]
 
         self.pain_sound = [
@@ -125,11 +123,6 @@ class Enemy(Entity):
         self.velocity.y *= -0.25
         self.velocity *= block.friction
         self.player_collision(block)
-        # if abs(self.velocity.y) > 10: #particules de chute
-        #    for i in range(10):
-        #        Blood(self.scene, self.rect.x + random.randint(0, self.rect.width),
-        #              self.rect.y + random.randint(0, self.rect.height),
-        #              Vector(self.velocity.x, self.velocity.y), self.scene.particle_group)
 
     def player_collision(self, block):
         """
@@ -168,4 +161,3 @@ class Enemy(Entity):
         """
         random.choice(self.die_sound).play()
         super().die()
-        self.scene.on_enemy_death()
