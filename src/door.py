@@ -1,3 +1,4 @@
+import pygame
 from model.event_box import EventBox
 
 
@@ -6,28 +7,30 @@ class Door(EventBox):
     Porte qui permet de passer au niveau suivant.
     Se déclanche lorsque le joueur est entré en collision avec.
 
-    Propriétés:
+    Paramètres:
+    - scene: scene où se trouve la porte
     - x, y: position de la porte
-    - width, height: taille de la porte
     - groups: tuple groupe auquel de la porte appartient
     """
 
-    def __init__(self, world, x, y, width, height, groups):
-        self.world = world
-        super().__init__(x, y, width, height, (self.world.player_group, self.world.enemy_group), groups)
+    def __init__(self, scene, x, y, groups):
+        self.scene = scene
+        self.image_closed = pygame.image.load("assets/door-closed.png").convert_alpha()
+        self.image_open = pygame.image.load("assets/door-open.png").convert_alpha()
         self.locked = False
-        self.set_locked(True)
+
+        super().__init__(x, y, "assets/door-closed.png", (self.scene.player_group, self.scene.enemy_group), groups)
 
     def on_collision(self, entity):
         """
         Est appelé lorsque un joueur est entré en collision avec la porte
-        
+
         Propriétés:
         - entity: entité qui est entré en colision
         """
         super().on_collision(entity)
         if self.locked == False:
-            self.world.level.player_access_door()
+            self.scene.next_level()
             self.set_locked(True)
 
     def set_locked(self, state: bool):
@@ -36,6 +39,6 @@ class Door(EventBox):
         """
         self.locked = state
         if self.locked:
-            self.image.fill((225, 0, 0))
+            self.image = self.image_closed
         else:
-            self.image.fill((155, 155, 0))
+            self.image = self.image_open

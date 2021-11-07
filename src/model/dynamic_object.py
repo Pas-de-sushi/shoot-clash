@@ -8,13 +8,13 @@ class DynamicObject(pygame.sprite.Sprite):
     Classe représentant un objet qui peut bouger.
 
     Paramètres:
-        world: monde dans lequel se trouve l'objet
+        scene: monde dans lequel se trouve l'objet
         x, y: coordonnées de l'objet
         mass: masse de l'objet
         groups: groupes dans lesquels se trouve l'objet
     """
 
-    def __init__(self, world, x, y, mass, groups) -> None:
+    def __init__(self, scene, x, y, mass, groups) -> None:
         """
         Constructeur de la classe DynamicObject.
 
@@ -31,7 +31,7 @@ class DynamicObject(pygame.sprite.Sprite):
 
         self.velocity = Vector(0, 0)
         self.mass = mass  # Utilisée pour la gravité et les collisions
-        self.world = world
+        self.scene = scene
 
     def update(self):
         """

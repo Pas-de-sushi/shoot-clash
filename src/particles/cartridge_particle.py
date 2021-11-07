@@ -11,7 +11,7 @@ class Cartridge(Particle):
     Représente un particule de la cartouche.
 
     Paramètres:
-        world: le monde dans lequel se déroule la simulation
+        scene: la scene dans lequel se déroule la simulation
         x: la position en x de la particule
         y: la position en y de la particule
         velocity: la vitesse de la particule
@@ -21,18 +21,18 @@ class Cartridge(Particle):
     Modifie la vitesse de la particule de manière aléatoire.
     """
 
-    def __init__(self, world, x, y, velocity: Vector, lifetime, groups) -> None:
+    def __init__(self, scene, x, y, velocity: Vector, lifetime, groups) -> None:
         # Création de l'image de la particule
         self.image = pygame.Surface([4, 3])
         self.image.fill((250, 250, 0))
 
-        super().__init__(world, x, y, 1, velocity, lifetime, groups)
+        super().__init__(scene, x, y, 1, velocity, lifetime, groups)
 
         self.velocity.y = -6
 
     def handle_collision(self, old_rect):
         self.rect = check_collision(
-            self.world.map_group,
+            self.scene.map_group,
             old_rect,
             self.rect,
             self.right,
