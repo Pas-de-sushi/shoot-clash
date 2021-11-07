@@ -110,8 +110,16 @@ class Level(Scene):
         """
         pass
 
+    def draw_background(self):
+        """
+        Dessine le fond du niveau.
+
+        Peut être modifié dans les classes filles.
+        """
+        self.screen.fill((50, 52, 67))
+
     def draw(self) -> None:
-        self.screen.fill((0, 0, 0))  # On remplit l'écran de noir
+        self.draw_background()
 
         # Affichage des groupes de sprites
         self.map_group.draw(self.screen)

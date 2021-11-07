@@ -10,18 +10,17 @@ class Player(Entity):
     """
     Classe qui represente le joueur. Hérite de la classe Entity.
 
-    Propriétés:
+    Paramètres:
     - scene: instance de la classe scene
     - x, y: position du joueur
     - mass: masse du joueur
     - groups: tuple des groupes d'entités
+
+    Propriétés:
     """
 
     def __init__(self, scene, x, y, mass, groups, weapon) -> None:
-        self.image = pygame.Surface([10, 15])
-        self.image.fill((0, 255, 0))
-
-        super().__init__(scene, x, y, mass, PLAYER_MAX_HEALTH, groups)
+        super().__init__(scene, x, y, 48, 72, "assets/player.png", mass, PLAYER_MAX_HEALTH, groups)
 
         self.jump_count = 0  # Nombre de sauts effectués
         self.direction = "right"  # Direction du joueur (left/right)
@@ -81,8 +80,8 @@ class Player(Entity):
 
         self.weapon.shoot(
             self.scene,
-            self.rect.x,
-            self.rect.y,
+            self.rect.x - self.image.get_width() / 2,
+            self.rect.y + self.image.get_height() / 2,
             self.direction,
             (self.scene.bullet_group),
         )

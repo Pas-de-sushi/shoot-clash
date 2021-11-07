@@ -16,6 +16,8 @@ class Enemy(Entity):
         scene: la scene dans lequel se trouve l'ennemi
         x: la position en x de l'ennemi
         y: la position en y de l'ennemi
+        width, height: la taille de l'ennemi
+        image: l'image de l'ennemi
         mass: la masse de l'ennemi
         damages: les dégâts infligés lors d'un attaque
         groups: les groupes dans lesquels l'ennemi doit être ajouté
@@ -26,7 +28,7 @@ class Enemy(Entity):
         self.image.fill((255, 0, 0))
         self.image.fill((0, 100, 150))
 
-        super(Enemy, self).__init__(scene, x, y, mass, 100, groups)
+        super(Enemy, self).__init__(scene, x, y, 44, 41, "assets/enemy/pig.png", mass, 100, groups)
         self.friction = 0.5
         self.damages = damages
 
