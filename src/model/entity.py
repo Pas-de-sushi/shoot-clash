@@ -27,6 +27,12 @@ class Entity(DynamicObject):
         self.max_health = max_health
         self.health = self.max_health
 
+    def type(self):
+        """
+        Retourne le type de l'entité.
+        """
+        return "entity"
+
     def move(self, vector: Vector):
         """
         Déplace l'entité d'un vecteur donné.

@@ -1,8 +1,6 @@
 import pygame
 
 from constants import *
-from bullet import Bullet, Weapon
-from enemy import Enemy
 from model.entity import Entity
 from utils.collision import check_collision
 from utils.vector import Vector
@@ -33,6 +31,9 @@ class Player(Entity):
 
         self.friction = 0.5
         self.weapon = weapon
+
+    def type(self):
+        return "player"
 
 
     def update(self):
@@ -113,6 +114,14 @@ class Player(Entity):
             (x - 20, self.rect.y - 15, width, 3),
         )
 
+    def receive_damage(self, damage):
+        """
+        Gestion des dommages reçus.
+        """
+        if self.last_damage >= DAMAGE_COOLDOWN:
+            super().receive_damage(damage)
+            self.last_damage = 0
+
     def handle_collision(self, old_rect):
         """
         Gestion des collisions entre le joueur et les blocs.
@@ -138,6 +147,22 @@ class Player(Entity):
             self.top,
             self.bottom,
         )
+
+    def enemy_collision(self, block):
+        """
+        Collision avec un ennemi (rebond et dommages).
+        *
+        Vélocité maximale de 15.
+        """
+        if isinstance(block, Entity) and block.type() == "enemy":
+            # Les dommages sont gérés à la fois au niveau de l'ennemi et au niveau du joueur
+            # en fonction de quelle entité avance.
+            self.receive_damage(block.damages)
+
+            velocity = self.velocity * 3
+            velocity.limit(15, 15)
+            self.velocity = velocity
+
 
     def right(self, block):
         """
@@ -172,18 +197,3 @@ class Player(Entity):
         self.velocity *= block.friction
         self.jump_count = 0
         self.enemy_collision(block)
-
-    def enemy_collision(self, block):
-        """
-        Gère la collision avec un ennemi.
-        En cas de collision, le joueur perds de la vie et est repoussé.
-        """
-        if isinstance(block, Enemy):
-            if self.last_damage >= DAMAGE_COOLDOWN:
-                self.receive_damage(block.damages)
-                self.last_damage = 0
-
-                # Rebond sur l'ennemi (vélocité max de 15)
-                velocity = self.velocity * 3
-                velocity.limit(15, 15)
-                self.velocity = velocity
