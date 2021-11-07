@@ -1,10 +1,12 @@
+import random
+
 import pygame
 
 from constants import *
-from bullet import Bullet, Weapon
 from enemy import Enemy
 from model.entity import Entity
 from utils.collision import check_collision
+from utils.sound_play_cooldown import sound_play_cooldown
 from utils.vector import Vector
 
 
@@ -34,6 +36,14 @@ class Player(Entity):
         self.friction = 0.5
         self.weapon = weapon
 
+        self.steps_left_sound = [pygame.mixer.Sound("assets/sounds/steps/foley_foot_left-0" + str(i) + ".wav") for i in
+                                 range(1, 4)]
+        self.steps_right_sound = [pygame.mixer.Sound("assets/sounds/steps/foley_foot_right-0" + str(i) + ".wav") for i
+                                  in
+                                  range(1, 4)]
+        self.step_sound_timer = 0
+
+        self.is_on_floor = False
 
     def update(self):
         """
@@ -45,15 +55,24 @@ class Player(Entity):
         pressed_keys = pygame.key.get_pressed()
         movement = Vector(0, 0)
 
+        # Met a jour le timer pour les sons de pas
+        if self.step_sound_timer > 0:
+            self.step_sound_timer -= self.scene.elapsed
+
         # Déplacement gauche
         if pressed_keys[pygame.K_LEFT]:
             movement.x = -SPEED
             self.direction = "left"
-
+            if self.is_on_floor:
+                self.step_sound_timer = sound_play_cooldown(random.choice(self.steps_left_sound),
+                                                            self.step_sound_timer, 200)
         # Déplacement droit
         if pressed_keys[pygame.K_RIGHT]:
             movement.x += SPEED
             self.direction = "right"
+            if self.is_on_floor:
+                self.step_sound_timer = sound_play_cooldown(random.choice(self.steps_right_sound),
+                                                            self.step_sound_timer, 200)
 
         # Saut
         if pressed_keys[pygame.K_UP] and not self.previous_jump:
@@ -71,6 +90,8 @@ class Player(Entity):
 
         self.velocity += movement
         self.last_damage += self.scene.elapsed
+        self.is_on_floor = False
+
         super().update()
 
     def shoot(self):
@@ -172,6 +193,7 @@ class Player(Entity):
         self.velocity *= block.friction
         self.jump_count = 0
         self.enemy_collision(block)
+        self.is_on_floor = True
 
     def enemy_collision(self, block):
         """

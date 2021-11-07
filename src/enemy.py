@@ -29,6 +29,10 @@ class Enemy(Entity):
         super(Enemy, self).__init__(scene, x, y, mass, 100, groups)
         self.friction = 0.5
         self.damages = damages
+        self.die_sound = [
+            pygame.mixer.Sound("assets/sounds/death_ennemy/vo_teefault_pain_short-0" + str(i) + ".wav") for i
+            in
+            range(1, 10)]
 
     def update(self):
         """
@@ -140,5 +144,6 @@ class Enemy(Entity):
         """
         Méthode appelée lorsque l'ennemi meurt.
         """
+        random.choice(self.die_sound).play()
         super().die()
         self.scene.on_enemy_death()
