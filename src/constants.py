@@ -6,6 +6,7 @@ SCREEN_WIDTH = 1080
 SCREEN_HEIGHT = 720
 
 MAX_FPS = 60  # Limite de FPS
+ENEMY_SPAWN_DELAY = 3000  # Delai entre l'apparition des ennemis
 
 # Constantes du joueur
 MAX_JUMP = 1  # Nombre maximal de sauts consécutifs
