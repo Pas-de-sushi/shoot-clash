@@ -91,7 +91,9 @@ class Player(Entity):
                 self.world,
                 self.rect.x,
                 self.rect.y,
-                Vector(3 if self.direction == "left" else -3, 3),
+                Vector(random.randint(1,4) if self.direction == "left" else
+                    random.randint(-4, -1),
+                    random.randint(2, 5)),
                 2000,
                 self.world.particle_group,
             )
