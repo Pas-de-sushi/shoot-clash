@@ -47,6 +47,7 @@ class Bullet(DynamicObject):
             #      self.scene.particle_group)
             self.kill()
 
+
 class Weapon:
     """
     Arme du joueur.
@@ -60,11 +61,13 @@ class Weapon:
     Méthodes :
         shoot() : permet à l'arme de tirer --> méthode appelée par la méthode shoot() de Player
     """
-    def __init__(self, cadence, recoil, damage, velocity=Vector(22,0)) -> None:
+
+    def __init__(self, cadence, recoil, damage, velocity=Vector(22, 0)) -> None:
         self.cadence = cadence
         self.recoil = recoil
         self.damage = damage
         self.velocity = velocity
+        self.shoot_sound = pygame.mixer.Sound("assets/sounds/wp_gun_fire-01.wav")
 
     def shoot(self, scene, entity_rect_x, entity_rect_y, entity_direction, group):
         """
@@ -77,7 +80,7 @@ class Weapon:
             entity_direction: la direction de l'entité qui tire
             group: les groupes de sprites dans lesquels la balle doit apparaître
         """
-
+        pygame.mixer.Sound.play(self.shoot_sound)
         Bullet(
             scene,
             entity_rect_x,
