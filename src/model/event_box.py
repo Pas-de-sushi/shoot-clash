@@ -9,14 +9,14 @@ class EventBox(Block):
 
     Paramètres:
         - x, y: coordonnées du sprite
-        - width, height: dimensions du sprite
+        - image: image du sprite
         - watch_groups: liste des groupes à surveiller
         - groups: liste des groupes dans lesquels le sprite est ajouté
 
     """
 
-    def __init__(self, x, y, width, height, watch_groups, groups):
-        super().__init__(x, y, width, height, (150, 150, 0), groups, 1)
+    def __init__(self, x, y, image, watch_groups, groups):
+        super().__init__(x, y, image, groups, 1)
         self.watch_groups = watch_groups
 
     def update(self):
