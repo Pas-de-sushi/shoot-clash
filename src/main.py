@@ -6,10 +6,15 @@ from scenes.intro import Intro
 pygame.init()
 pygame.display.set_caption("Shoot clash")
 
+pygame.mixer.init()  # Initialise le son
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()  # Horloge du jeu (limite les fps)
 current_scene = Intro(screen)
 running = True
+pygame.mixer.music.load("assets/sounds/music/music_pirate.wav")
+pygame.mixer.music.play(-1)
+pygame.mixer.music.set_volume(0.3)
+
 
 # Boucle principal
 while running:
@@ -27,3 +32,4 @@ while running:
     current_scene.draw()
 
     pygame.display.update()
+  

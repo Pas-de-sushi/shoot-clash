@@ -1,8 +1,15 @@
+import random
+
 import pygame
+import random
 
 from constants import *
+from particles.cartridge_particle import Cartridge
+from bullet import Bullet, Weapon
+from enemy import Enemy
 from model.entity import Entity
 from utils.collision import check_collision
+from utils.sound_play_cooldown import sound_play_cooldown
 from utils.vector import Vector
 
 
@@ -31,9 +38,21 @@ class Player(Entity):
         self.friction = 0.5
         self.weapon = weapon
 
+        self.pain_sound = [
+            pygame.mixer.Sound("assets/sounds/player_pain/vo_teefault_pain_short-0" + str(i) + ".wav") for i in
+            range(1, 10)]
+
+        self.steps_left_sound = [pygame.mixer.Sound("assets/sounds/steps/foley_foot_left-0" + str(i) + ".wav") for i in
+                                 range(1, 4)]
+        self.steps_right_sound = [pygame.mixer.Sound("assets/sounds/steps/foley_foot_right-0" + str(i) + ".wav") for i
+                                  in
+                                  range(1, 4)]
+        self.step_sound_timer = 0
+
+        self.is_on_floor = False
+
     def type(self):
         return "player"
-
 
     def update(self):
         """
@@ -45,15 +64,24 @@ class Player(Entity):
         pressed_keys = pygame.key.get_pressed()
         movement = Vector(0, 0)
 
+        # Met a jour le timer pour les sons de pas
+        if self.step_sound_timer > 0:
+            self.step_sound_timer -= self.scene.elapsed
+
         # Déplacement gauche
         if pressed_keys[pygame.K_LEFT]:
             movement.x = -SPEED
             self.direction = "left"
-
+            if self.is_on_floor:
+                self.step_sound_timer = sound_play_cooldown(random.choice(self.steps_left_sound),
+                                                            self.step_sound_timer, 200)
         # Déplacement droit
         if pressed_keys[pygame.K_RIGHT]:
             movement.x += SPEED
             self.direction = "right"
+            if self.is_on_floor:
+                self.step_sound_timer = sound_play_cooldown(random.choice(self.steps_right_sound),
+                                                            self.step_sound_timer, 200)
 
         # Saut
         if pressed_keys[pygame.K_UP] and not self.previous_jump:
@@ -71,6 +99,8 @@ class Player(Entity):
 
         self.velocity += movement
         self.last_damage += self.scene.elapsed
+        self.is_on_floor = False
+
         super().update()
 
     def shoot(self):
@@ -84,6 +114,18 @@ class Player(Entity):
             self.rect.y + self.image.get_height() / 2,
             self.direction,
             (self.scene.bullet_group),
+        )
+
+        # Cartouches
+        Cartridge(
+            self.scene,
+            self.rect.x,
+            self.rect.y,
+            Vector(random.randint(1, 4) if self.direction == "left" else
+                   random.randint(-4, -1),
+                   random.randint(2, 5)),
+            2000,
+            self.scene.particle_group,
         )
 
         # Recul de l'arme
@@ -162,7 +204,6 @@ class Player(Entity):
             velocity.limit(15, 15)
             self.velocity = velocity
 
-
     def right(self, block):
         """
         Collision avec un bloc à droite du joueur.
@@ -196,6 +237,7 @@ class Player(Entity):
         self.velocity *= block.friction
         self.jump_count = 0
         self.enemy_collision(block)
+        self.is_on_floor = True
 
     def die(self):
         """
@@ -204,3 +246,28 @@ class Player(Entity):
         """
         super().die()
         self.scene.game_over()
+
+    def enemy_collision(self, block):
+        """
+        Gère la collision avec un ennemi.
+        En cas de collision, le joueur perds de la vie et est repoussé.
+        """
+        if isinstance(block, Enemy):
+            if self.last_damage >= DAMAGE_COOLDOWN:
+                self.receive_damage(block.damages)
+                self.last_damage = 0
+
+                # Rebond sur l'ennemi (vélocité max de 15)
+                velocity = self.velocity * 3
+                velocity.limit(15, 15)
+                self.velocity = velocity
+
+    def receive_damage(self, damage):
+        """
+        Méthode appelée lorsqu'une entité est attaquée.
+        Joue un son
+        Paramètres:
+            damage : le nombre de dégâts reçus
+        """
+        random.choice(self.pain_sound).play()
+        super().receive_damage(damage)

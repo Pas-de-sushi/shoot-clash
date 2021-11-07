@@ -14,7 +14,8 @@ from scenes.end import GameOver, Victory
 class Level1(Level):
     def __init__(self, screen) -> None:
         super().__init__(screen)
-        self.background = pygame.image.load("assets/level1/background.png").convert()
+        self.background = pygame.image.load(
+            "assets/level1/background.png").convert()
 
     def load_level(self) -> None:
         # Murs du niveau
@@ -94,18 +95,22 @@ class Level1(Level):
 
         for i in range(10):
             enemy_list.append(
-                EnemySpawner(self, random.randint(380, 450), random.randint(80, 200), "assets/enemy/pig.png", 1, 20, 100)
+                EnemySpawner(self, random.randint(380, 450), random.randint(
+                    80, 200), "assets/enemy/pig.png", 1, 20, 100)
             )
             enemy_list.append(
-                EnemySpawner(self, random.randint(380, 450), random.randint(80, 200), "assets/enemy/crab.png", 1, 30, 200)
+                EnemySpawner(self, random.randint(380, 450), random.randint(
+                    80, 200), "assets/enemy/crab.png", 1, 30, 200)
             )
 
         for i in range(3):
             enemy_list.append(
-                EnemySpawner(self, random.randint(380, 450), random.randint(80, 200), "assets/enemy/cucumber.png", 1, 40, 100)
+                EnemySpawner(self, random.randint(380, 450), random.randint(
+                    80, 200), "assets/enemy/cucumber.png", 1, 40, 100)
             )
             enemy_list.append(
-                EnemySpawner(self, random.randint(380, 450), random.randint(80, 200), "assets/enemy/dude.png", 1, 70, 300)
+                EnemySpawner(self, random.randint(380, 450), random.randint(
+                    80, 200), "assets/enemy/dude.png", 1, 70, 300)
             )
 
         random.shuffle(enemy_list)
