@@ -8,6 +8,7 @@ from particles.cartridge_particle import Cartridge
 from bullet import Bullet, Weapon
 from enemy import Enemy
 from model.entity import Entity
+from particles.wall_particle import Wall
 from utils.collision import check_collision
 from utils.sound_play_cooldown import sound_play_cooldown
 from utils.vector import Vector
@@ -108,52 +109,72 @@ class Player(Entity):
         Gestion du tir : création d'une balle et recul sur le joueur.
         """
 
-        self.weapon.shoot(
+        shooted = self.weapon.shoot(
             self.scene,
-            self.rect.x - self.image.get_width() / 2,
+            self.rect.x + self.image.get_width() / 2,
             self.rect.y + self.image.get_height() / 2,
             self.direction,
             (self.scene.bullet_group),
         )
 
-        # Cartouches
-        Cartridge(
-            self.scene,
-            self.rect.x,
-            self.rect.y,
-            Vector(random.randint(1, 4) if self.direction == "left" else
-                   random.randint(-4, -1),
-                   random.randint(2, 5)),
-            2000,
-            self.scene.particle_group,
-        )
+        if shooted:
+            # Cartouches
+            Cartridge(
+                self.scene,
+                self.rect.x + self.image.get_width() / 2,
+                self.rect.y,
+                Vector(random.randint(1, 4) if self.direction == "left" else
+                    random.randint(-4, -1),
+                    random.randint(2, 5)),
+                2000,
+                self.scene.particle_group,
+            )
 
-        # Recul de l'arme
-        if self.direction == "left":
-            self.velocity.x += (self.weapon.recoil * 3) / self.mass
-        else:
-            self.velocity.x += (self.weapon.recoil * -3) / self.mass
+            # Recul de l'arme
+            if self.direction == "left":
+                self.velocity.x += (self.weapon.recoil * 3) / self.mass
+            else:
+                self.velocity.x += (self.weapon.recoil * -3) / self.mass
 
     def show_health(self):
         """
         Affiche la barre de vie du joueur.
         """
-
-        # Pourcentage de vie du joueur
         health_percent = self.health / PLAYER_MAX_HEALTH
 
-        # Milieu de la position x du joueur
         x = self.rect.x + self.rect.width / 2
-        # Taille de la barre en fonction de la vie du joueur
         width = 40 * (self.health / PLAYER_MAX_HEALTH)
-        # Couleur de la barre en fonction de la vie du joueur
         color = (255 - health_percent * 255, health_percent * 255, 0)
 
         pygame.draw.rect(
             self.scene.screen,
             color,
-            (x - 20, self.rect.y - 15, width, 3),
+            (x - 20, self.rect.y - 15, width, 4),
         )
+
+    def show_reload(self):
+        """
+        Affiche la barre de vie et la barre de rechargement du joueur.
+        """
+        x = self.rect.x + self.rect.width / 2
+        width = 40 * (self.weapon.reload_progress / self.weapon.reload_total)
+
+        if self.weapon.is_burst:
+            color = (255, 0, 0)
+        else:
+            color = (255, 255, 255)
+
+        pygame.draw.rect(
+            self.scene.screen,
+            color,
+            (x - 20, self.rect.y - 10, width, 2),
+        )
+
+    def update_reload(self, elapsed):
+        """
+        Mise à jour du temps de reload des armes.
+        """
+        self.weapon.update_reload(elapsed)
 
     def receive_damage(self, damage):
         """
@@ -234,11 +255,24 @@ class Player(Entity):
         """
         Collision avec un bloc en bas du joueur.
         """
+        # Affichage des particules de chute
+        if self.velocity.y > 15:
+            for i in range(4):
+                Wall(
+                    self.scene,
+                    self.rect.x + self.rect.width / 2,
+                    self.rect.y + self.rect.height / 2,
+                    Vector(random.randint(-5, 5), self.velocity.y / 5 * (-1)),
+                    1500,
+                    self.scene.particle_group,
+                )
+
         self.velocity.y *= -0.25
         self.velocity *= block.friction
         self.jump_count = 0
         self.enemy_collision(block)
         self.is_on_floor = True
+
 
     def die(self):
         """

@@ -134,13 +134,14 @@ class Level(Scene):
         self.map_group.draw(self.screen)
         self.event_box_group.draw(self.screen)
         self.particle_group.draw(self.screen)
+        self.bullet_group.draw(self.screen)
         self.player_group.draw(self.screen)
         self.enemy_group.draw(self.screen)
-        self.bullet_group.draw(self.screen)
 
-        # Affichage de la barre de vie du joueur
+        # Affichage de la barre de vie et de la barre de reload
         for player in self.player_group:
             player.show_health()
+            player.show_reload()
 
     def update(self, elapsed: int):
         """
@@ -153,6 +154,10 @@ class Level(Scene):
         self.bullet_group.update()
         self.player_group.update()
         self.event_box_group.update()
+
+        # Mise à jour du rechargement de l'arme du joueur
+        for player in self.player_group:
+            player.update_reload(elapsed)
 
         # Supression des éléments qui sont hors de l'écran
         self.remove_outbound_items()
