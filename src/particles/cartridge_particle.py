@@ -23,7 +23,7 @@ class Cartridge(Particle):
 
     def __init__(self, scene, x, y, velocity: Vector, lifetime, groups) -> None:
         # Création de l'image de la particule
-        self.image = pygame.Surface([4, 3])
+        self.image = pygame.Surface([5, 3])
         self.image.fill((250, 250, 0))
 
         super().__init__(scene, x, y, 1, velocity, lifetime, groups)

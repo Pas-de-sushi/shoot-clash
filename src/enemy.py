@@ -4,6 +4,7 @@ import pygame
 
 from model.entity import Entity
 from particles.blood import Blood
+from particles.wall_particle import Wall
 from utils.collision import check_collision
 from utils.vector import Vector
 
@@ -120,6 +121,18 @@ class Enemy(Entity):
         """
         Collision avec un bloc en bas.
         """
+        # Affichage des particules de chute
+        if self.velocity.y > 15:
+            for i in range(4):
+                Wall(
+                    self.scene,
+                    self.rect.x + self.rect.width / 2,
+                    self.rect.y + self.rect.height / 2,
+                    Vector(random.randint(-5, 5), self.velocity.y / 5 * (-1)),
+                    1500,
+                    self.scene.particle_group,
+                )
+
         self.velocity.y *= -0.25
         self.velocity *= block.friction
         self.player_collision(block)
@@ -135,9 +148,14 @@ class Enemy(Entity):
         """
         Méthode appelée lorsqu'un ennemi est attaqué.
         """
-        self.velocity = self.velocity + \
-            entity.velocity * (entity.mass / self.mass)
-        for i in range(20):
+        self.velocity = self.velocity + entity.velocity * 0.2
+
+        if self.health <= damage:
+            blood_count = 50
+        else:
+            blood_count = 5
+
+        for _ in range(blood_count):
             Blood(
                 self.scene,
                 self.rect.x + random.randint(0, self.rect.width),
@@ -146,7 +164,6 @@ class Enemy(Entity):
                 5000,
                 self.scene.particle_group,
             )
-        # random.choice(self.pain_sound).play()
         super().receive_damage(damage)
 
     def set_health(self, new_health):

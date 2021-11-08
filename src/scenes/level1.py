@@ -84,7 +84,7 @@ class Level1(Level):
             (self.event_box_group, self.door_group)
         )
 
-        w1 = Weapon(cadence=1500, recoil=3, damage=100)
+        w1 = Weapon(cadence=100, recoil=1, damage=20, reload_count=20, reload_time=200)
         Player(self, 140, 470, 1, self.player_group, weapon=w1)
 
     def draw_background(self):

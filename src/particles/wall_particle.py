@@ -6,7 +6,7 @@ from utils.vector import Vector
 
 class Wall(Particle):
     """
-    Représente un particule lors du contact d'une balle avec un mur.
+    Représente un particule lors du contact avec un mur.
 
     Paramètres:
         scene: le monde dans lequel se déroule la simulation
