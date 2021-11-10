@@ -1,19 +1,17 @@
 import random
 
 import pygame
-
 from block import Block
 from bullet import Weapon
 from constants import *
 from door import Door
 from player import Player
 from scene import EnemySpawner, Level
-from scenes.end import GameOver, Victory
 
 
 class Level1(Level):
-    def __init__(self, screen) -> None:
-        super().__init__(screen)
+    def __init__(self, scene_manager) -> None:
+        super().__init__(scene_manager)
         self.background = pygame.image.load(
             "assets/level1/background.png").convert()
 
@@ -120,9 +118,7 @@ class Level1(Level):
         return 3
 
     def next_level(self):
-        self.is_finished = True
-        self.next_scene = Victory(self.screen, Level1)
+        self.scene_manager.next_level()
 
     def game_over(self):
-        self.is_finished = True
-        self.next_scene = GameOver(self.screen, Level1)
+        self.scene_manager.load_scene("game_over")

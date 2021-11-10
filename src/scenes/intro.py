@@ -1,6 +1,5 @@
 import pygame
 from scene import Scene
-from scenes.level1 import Level1
 
 
 class Intro(Scene):
@@ -8,9 +7,10 @@ class Intro(Scene):
     Scène d'introduction du jeu.
     """
 
-    def __init__(self, screen) -> None:
-        super().__init__(screen)
+    def __init__(self, scene_manager) -> None:
+        super().__init__(scene_manager)
         self.background = pygame.image.load("assets/scenes/intro.png").convert()
+        self.last_keys_state = pygame.key.get_pressed()
 
     def update(self, elapsed: int) -> None:
         """
@@ -19,9 +19,9 @@ class Intro(Scene):
         super().update(elapsed)
 
         pressed_keys = pygame.key.get_pressed()
-        if pressed_keys[pygame.K_SPACE]:
-            self.is_finished = True
-            self.next_scene = Level1(self.screen)
+        if pressed_keys[pygame.K_SPACE] and not self.last_keys_state[pygame.K_SPACE]:
+            self.scene_manager.next_level()
+        self.last_keys_state = pressed_keys
 
     def draw(self) -> None:
         self.screen.blit(self.background, (0, 0))
