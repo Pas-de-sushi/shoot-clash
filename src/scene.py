@@ -9,7 +9,7 @@ class Scene:
     Tous les niveaux et les menus sont des scènes et héritent de cette classe.
 
     Propriétés:
-        screen (pygame.Surface): Surface de la fenêtre de jeu.
+        scene_manager (SceneManager): Scene manager.
         elapsed (float): le temps écoulé depuis la dernière frame.
 
     Méthodes à implémenter pour les classes filles:
