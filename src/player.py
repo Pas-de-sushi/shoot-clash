@@ -1,13 +1,11 @@
 import random
 
 import pygame
-import random
 
 from constants import *
-from particles.cartridge_particle import Cartridge
-from bullet import Bullet, Weapon
 from enemy import Enemy
 from model.entity import Entity
+from particles.cartridge_particle import Cartridge
 from particles.wall_particle import Wall
 from utils.collision import check_collision
 from utils.sound_play_cooldown import sound_play_cooldown
@@ -78,7 +76,7 @@ class Player(Entity):
                                                             self.step_sound_timer, 200)
         # Déplacement droit
         if pressed_keys[pygame.K_RIGHT]:
-            movement.x += SPEED
+            movement.x = +SPEED
             self.direction = "right"
             if self.is_on_floor:
                 self.step_sound_timer = sound_play_cooldown(random.choice(self.steps_right_sound),
@@ -124,8 +122,8 @@ class Player(Entity):
                 self.rect.x + self.image.get_width() / 2,
                 self.rect.y,
                 Vector(random.randint(1, 4) if self.direction == "left" else
-                    random.randint(-4, -1),
-                    random.randint(2, 5)),
+                       random.randint(-4, -1),
+                       random.randint(2, 5)),
                 2000,
                 self.scene.particle_group,
             )
@@ -272,7 +270,6 @@ class Player(Entity):
         self.jump_count = 0
         self.enemy_collision(block)
         self.is_on_floor = True
-
 
     def die(self):
         """

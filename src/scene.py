@@ -1,6 +1,7 @@
+from bullet import *
 from constants import *
 from enemy import Enemy
-from bullet import *
+
 
 class Scene:
     """
@@ -8,21 +9,19 @@ class Scene:
     Tous les niveaux et les menus sont des scènes et héritent de cette classe.
 
     Propriétés:
-        screen (pygame.Surface): Surface de la fenêtre de jeu.
+        scene_manager (SceneManager): Scene manager.
         elapsed (float): le temps écoulé depuis la dernière frame.
-        is_finished (bool): indique si la scène est terminée.
-        next_scene (Scene): la scène suivante (à affiché si la scène est terminée).
 
     Méthodes à implémenter pour les classes filles:
         update(self): met à jour la scène (appelée à chaque frame).
         draw(self): dessine la scène (appelée à chaque frame).
     """
 
-    def __init__(self, screen) -> None:
-        self.screen = screen
+    def __init__(self, scene_manager) -> None:
+        self.scene_manager = scene_manager
+        self.screen = scene_manager.screen
         self.elapsed = 0
-        self.is_finished = False
-        self.next_scene = None
+        
 
     def update(self, elapsed: int) -> None:
         """
@@ -60,8 +59,8 @@ class Level(Scene):
         get_enemy_max(self): retourne le nombre d'ennemis maximum simultanés.
     """
 
-    def __init__(self, screen) -> None:
-        super().__init__(screen)
+    def __init__(self, scene_manager) -> None:
+        super().__init__(scene_manager)
 
         self.enemy_max = self.get_enemy_max()  # Nombre maximal d'ennemis simultanés
         self.enemy_list = self.get_enemy_list()  # Liste des ennemis à faire apparaitre
@@ -105,11 +104,10 @@ class Level(Scene):
 
     def next_level(self):
         """"
-        Passe au niveau suivant. Définir la scène suivante.
+        Passe au niveau suivant.
 
-        Doit être implémenté dans les classes filles.
         """
-        pass
+        self.scene_manager.next_level()
 
     def game_over(self):
         """
@@ -199,14 +197,15 @@ class Level(Scene):
         # Suppression des particules
         for particle in self.particle_group:
             if particle.rect.x < -particle.rect.width or particle.rect.x > self.screen.get_width() or \
-                    particle.rect.y < -particle.rect.height or particle.rect.y > self.screen.get_height():
+                particle.rect.y < -particle.rect.height or particle.rect.y > self.screen.get_height():
                 self.particle_group.remove(particle)
 
         # Supression des ennemis
         for enemy in self.enemy_group:
             if enemy.rect.x < -enemy.rect.width or enemy.rect.x > self.screen.get_width() or \
-                    enemy.rect.y < -enemy.rect.height or enemy.rect.y > self.screen.get_height():
+                enemy.rect.y < -enemy.rect.height or enemy.rect.y > self.screen.get_height():
                 enemy.die()
+
 
 class EnemySpawner:
     """
