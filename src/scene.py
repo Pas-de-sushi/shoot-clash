@@ -21,7 +21,7 @@ class Scene:
         self.scene_manager = scene_manager
         self.screen = scene_manager.screen
         self.elapsed = 0
-        self.next_scene = None
+        
 
     def update(self, elapsed: int) -> None:
         """

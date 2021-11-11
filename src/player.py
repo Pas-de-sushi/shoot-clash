@@ -83,7 +83,7 @@ class Player(Entity):
                                                             self.step_sound_timer, 200)
 
         # Saut
-        if pressed_keys[pygame.K_UP]:  # and not self.previous_jump:
+        if pressed_keys[pygame.K_UP] and not self.previous_jump:
             if self.jump_count < MAX_JUMP:
                 movement.y = -JUMP_HEIGHT
                 self.jump_count += 1
