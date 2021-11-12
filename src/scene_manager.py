@@ -41,7 +41,7 @@ class SceneManager:
         assault_image = pygame.image.load("assets/guns/assault_riffle.png").convert_alpha()
 
         pistol_weapon = Weapon(pistol_image, cadence=700, recoil=3, damage=100, reload_count=2, reload_time=700)
-        assault_weapon = Weapon(assault_image, cadence=100, recoil=1, damage=20, reload_count=20, reload_time=500)
+        assault_weapon = Weapon(assault_image, cadence=100, recoil=1, damage=20, reload_count=20, reload_time=200)
 
         self.weapon_list = [assault_weapon, pistol_weapon]
         self.selected_weapon_index = 0
