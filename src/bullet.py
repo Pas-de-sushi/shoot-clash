@@ -70,6 +70,7 @@ class Weapon:
     une seconde après le dernier tir.
 
     Attributs :
+        image : image de l'arme
         cadence : cadence de tir de l'arme --> 0 = forte cadence et --> 10000+ = faible cadence
         recoil : recul produit par l'arme sur l'utilisateur
         damage : dégats de l'arme
@@ -87,7 +88,8 @@ class Weapon:
         shoot() : permet à l'arme de tirer --> méthode appelée par la méthode shoot() de Player
     """
 
-    def __init__(self, cadence, recoil, damage, reload_count, reload_time, velocity=Vector(22, 0)) -> None:
+    def __init__(self, image: pygame.Surface, cadence, recoil, damage, reload_count, reload_time, velocity=Vector(22, 0)) -> None:
+        self.image = image
         self.cadence = cadence
         self.recoil = recoil
         self.damage = damage
@@ -95,7 +97,8 @@ class Weapon:
         self.reload_time = reload_time
         self.reload_total = reload_time * reload_count
         self.velocity = velocity
-        self.shoot_sound = pygame.mixer.Sound("assets/sounds/pistolet_tontons_flingueurs.wav")
+        self.shoot_sound = pygame.mixer.Sound(
+            "assets/sounds/pistolet_tontons_flingueurs.wav")
 
         self.last_shoot = 0
         self.reload_progress = 0
@@ -124,7 +127,7 @@ class Weapon:
                 entity_rect_x,
                 entity_rect_y,
                 Vector(self.velocity.x if entity_direction ==
-                    "right" else -self.velocity.x, 0),
+                       "right" else -self.velocity.x, 0),
                 group,
                 self.damage
             )
